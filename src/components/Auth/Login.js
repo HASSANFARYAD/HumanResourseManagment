@@ -25,8 +25,7 @@ const Login = () => {
     },
   });
 
-  const store = useSelector((state) => state?.auth?.userAuth);
-  const { data, loading, serverErr, appErr } = store;
+  const data = useSelector((state) => state?.auth?.userAuth);
   if (data) return console.log(`/profile/${data?.id}`);
   return (
     <>
