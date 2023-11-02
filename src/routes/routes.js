@@ -11,6 +11,7 @@ import Login from "../components/Auth/Login/Login";
 import Register from "../components/Auth/Register/Register";
 import ResetPassword from "../components/Auth/ResetPassword/ResetPassword";
 import ForgotPassword from "../components/Auth/ForgotPassword/ForgotPassword";
+import ProtectedLayout from "../components/layouts/ProtectedLayout";
 
 const AppRoutes = () => {
   return (
@@ -21,12 +22,14 @@ const AppRoutes = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route element={<Index />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/update-profile" element={<UserProfile />} />
-            <Route path="/update-password" element={<UpdatePassword />} />
-            <Route path="/add-user" element={<AddUser />} />
-            <Route path="/users" element={<UserList />} />
+          <Route element={<ProtectedLayout />}>
+            <Route element={<Index />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/update-profile" element={<UserProfile />} />
+              <Route path="/update-password" element={<UpdatePassword />} />
+              <Route path="/add-user" element={<AddUser />} />
+              <Route path="/users" element={<UserList />} />
+            </Route>
           </Route>
           <Route path="/auth" element={<AuthIndex />} />
         </Routes>

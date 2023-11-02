@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { logoutAction } from "../../redux/authSlice";
+import { useDispatch } from "react-redux";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
   let profileLinks = [
     {
       name: "Profile",
@@ -166,9 +169,12 @@ const Sidebar = () => {
                 <hr class="dropdown-divider" />
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <Link
+                  className="dropdown-item"
+                  onClick={() => dispatch(logoutAction())}
+                >
                   Sign out
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

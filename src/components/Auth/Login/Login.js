@@ -1,8 +1,33 @@
 import React from "react";
 import "./Login.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+import { loginUserAction } from "../../../redux/authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().required("Email/Username is required"),
+      password: Yup.string().required("Password is required"),
+    }),
+    onSubmit: (values) => {
+      dispatch(loginUserAction(values));
+    },
+  });
+
+  const data = useSelector((state) => state?.auth?.userAuth);
+  if (data) {
+    return <Navigate to="/dashboard" />;
+  }
+
   return (
     <>
       <section className="vh-100" style={{ backgroundColor: "#9A616D" }}>
@@ -22,7 +47,7 @@ const Login = () => {
 
                   <div className="col-md-6 col-lg-7 d-flex align-items-center">
                     <div className="card-body p-4 p-lg-5 text-black">
-                      <form>
+                      <form onSubmit={formik.handleSubmit}>
                         <div className="row">
                           <div className="col-md-12">
                             <div className="text-center">
@@ -54,6 +79,9 @@ const Login = () => {
                                 id="form2Example17"
                                 className="form-control form-control"
                                 placeholder="example@example.com"
+                                value={formik.values.email}
+                                onChange={formik.handleChange("email")}
+                                onBlur={formik.handleBlur("email")}
                               />
                             </div>
 
@@ -69,7 +97,15 @@ const Login = () => {
                                 id="form2Example27"
                                 className="form-control form-control"
                                 placeholder="*****"
+                                value={formik.values.password}
+                                onChange={formik.handleChange("password")}
+                                onBlur={formik.handleBlur("password")}
                               />
+                            </div>
+                            <div className="mb-2 text-right text-red-400">
+                              {(formik.touched.email && formik.errors.email) ||
+                                (formik.touched.password &&
+                                  formik.errors.password)}
                             </div>
 
                             <div>

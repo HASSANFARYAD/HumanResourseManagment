@@ -1,70 +1,34 @@
-import React from "react";
-import { Outlet } from "react-router";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { dashboardCounts } from "../../../redux/adminSlice";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state?.admin?.values);
+
+  useEffect(() => {
+    dispatch(dashboardCounts());
+  }, [dispatch]);
+
   return (
     <>
       <div className="row">
-        <div className="col-md-4">
-          <div className="row">
-            <div className="col-md-12">
-              <div class="card w-100">
-                <img
-                  src="https://neurosciencenews.com/files/2023/05/neuroscience-fitness.jpg"
-                  class="card-img-top"
-                  alt="..."
-                />
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
-                  <a href="#" class="btn btn-primary">
-                    Go somewhere
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-12 mt-4">
-              <div class="card w-100">
-                <img
-                  src="https://neurosciencenews.com/files/2023/05/neuroscience-fitness.jpg"
-                  class="card-img-top"
-                  alt="..."
-                />
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
-                  <a href="#" class="btn btn-primary">
-                    Go somewhere
-                  </a>
-                </div>
-              </div>
-            </div>
+        <div className="col-md-3 offset-md-3">
+          <div
+            className="card w-100 text-center text-white p-5"
+            style={{ background: "#196f9c" }}
+          >
+            <h4>Total Customers</h4>
+            <h2 className="fw-medium">{data?.customer}</h2>
           </div>
         </div>
-        <div className="col-md-8">
-          <div class="card w-100">
-            <img
-              src="https://neurosciencenews.com/files/2023/05/neuroscience-fitness.jpg"
-              class="card-img-top"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" class="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
+        <div className="col-md-3">
+          <div
+            className="card w-100 text-center text-white p-5"
+            style={{ background: "#196f9c" }}
+          >
+            <h4>Total Valet</h4>
+            <h2 className="fw-medium">{data?.valet}</h2>
           </div>
         </div>
       </div>
