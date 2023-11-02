@@ -9,30 +9,15 @@ const UserProfile = () => {
             <form className="form">
               <div className="row">
                 <div className="col-md-6">
-                  <div class="mb-3">
-                    <label class="fw-semibold">First Name</label>
-                    <input type="text" class="form-control" />
+                  <div className="mb-3">
+                    <label className="fw-semibold">First Name</label>
+                    <input type="text" className="form-control" />
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <div class="mb-3">
-                    <label class="fw-semibold">Last Name</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-md-6">
-                  <div class="mb-3">
-                    <label class="fw-semibold">Username</label>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div class="mb-3">
-                    <label class="fw-semibold">Email</label>
-                    <input type="email" class="form-control" />
+                  <div className="mb-3">
+                    <label className="fw-semibold">Last Name</label>
+                    <input type="text" className="form-control" />
                   </div>
                 </div>
               </div>
@@ -40,10 +25,25 @@ const UserProfile = () => {
               <div className="row">
                 <div className="col-md-6">
                   <div className="mb-3">
-                    <label for="formFile" class="fw-semibold">
+                    <label className="fw-semibold">Username</label>
+                    <input type="text" className="form-control" />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="fw-semibold">Email</label>
+                    <input type="email" className="form-control" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label for="formFile" className="fw-semibold">
                       Select Country
                     </label>
-                    <select id="country" name="country" class="form-select">
+                    <select id="country" name="country" className="form-select">
                       <option value="">Select Country</option>
                       <option value="Afghanistan">Afghanistan</option>
                       <option value="Åland Islands">Åland Islands</option>
@@ -373,21 +373,21 @@ const UserProfile = () => {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <div class="mb-3">
-                    <label class="fw-semibold">State</label>
-                    <input type="text" class="form-control" />
+                  <div className="mb-3">
+                    <label className="fw-semibold">State</label>
+                    <input type="text" className="form-control" />
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <div class="mb-3">
-                    <label class="fw-semibold">City</label>
-                    <input type="text" class="form-control" />
+                  <div className="mb-3">
+                    <label className="fw-semibold">City</label>
+                    <input type="text" className="form-control" />
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <div class="mb-3">
-                    <label class="fw-semibold">Zip code</label>
-                    <input type="text" class="form-control" />
+                  <div className="mb-3">
+                    <label className="fw-semibold">Zip code</label>
+                    <input type="text" className="form-control" />
                   </div>
                 </div>
               </div>
@@ -399,35 +399,35 @@ const UserProfile = () => {
                       <label className="fw-semibold p">Gender</label>
                     </div>
                     <div className="col-md-9">
-                      <div class="form-check">
+                      <div className="form-check">
                         <input
-                          class="form-check-input"
+                          className="form-check-input"
                           type="radio"
                           name="Gender"
                           id="Male"
                         />
-                        <label class="form-check-label" for="Male">
+                        <label className="form-check-label" for="Male">
                           Male
                         </label>
                       </div>
-                      <div class="form-check">
+                      <div className="form-check">
                         <input
-                          class="form-check-input"
+                          className="form-check-input"
                           type="radio"
                           name="Gender"
                           id="Female"
                         />
-                        <label class="form-check-label" for="Female">
+                        <label className="form-check-label" for="Female">
                           Female
                         </label>
                       </div>
                     </div>
                   </div>
 
-                  <div class="mb-3">
-                    <label class="fw-semibold">About </label>
+                  <div className="mb-3">
+                    <label className="fw-semibold">About </label>
                     <textarea
-                      class="form-control"
+                      className="form-control"
                       rows="3"
                       placeholder="I am Developer"
                     ></textarea>
@@ -438,7 +438,7 @@ const UserProfile = () => {
                     <select
                       name="timezone_offset"
                       id="timezone-offset"
-                      class="form-select"
+                      className="form-select"
                     >
                       <option value="-12:00">
                         (GMT -12:00) Eniwetok, Kwajalein
@@ -545,16 +545,22 @@ const UserProfile = () => {
                     </select>
                   </div>
 
-                  <div class="mb-3">
-                    <label class="fw-semibold">Profile Image</label>
-                    <input class="form-control" type="file" accept="image/*" />
+                  <div className="mb-3">
+                    <label className="fw-semibold">Profile Image</label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      accept="image/*"
+                    />
                   </div>
                 </div>
               </div>
 
-              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-danger me-md-2">Change Password</button>
-                <button class="btn btn-primary" type="submit">
+              <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button className="btn btn-danger me-md-2">
+                  Change Password
+                </button>
+                <button className="btn btn-primary" type="submit">
                   Update Profile
                 </button>
               </div>

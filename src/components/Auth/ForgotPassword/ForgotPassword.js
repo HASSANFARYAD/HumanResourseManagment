@@ -1,8 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import "../Login/Login.css";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { sendForgotPasswordEmail } from "../../../redux/authSlice";
 
 const ForgotPassword = () => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const forgotPassword = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .required("Email is required")
+        .email("Invalid email address"),
+    }),
+    onSubmit: (values) => {
+      setLoading(true);
+      dispatch(sendForgotPasswordEmail(values));
+    },
+  });
+
   return (
     <>
       <section className="vh-100" style={{ backgroundColor: "#9A616D" }}>
@@ -22,7 +44,7 @@ const ForgotPassword = () => {
 
                   <div className="col-md-6 col-lg-7 d-flex align-items-center">
                     <div className="card-body p-4 p-lg-5 text-black">
-                      <form>
+                      <form onSubmit={forgotPassword.handleSubmit}>
                         <div className="row">
                           <div className="col-md-12">
                             <div className="text-center">
@@ -59,15 +81,24 @@ const ForgotPassword = () => {
                                 id="form2Example17"
                                 className="form-control form-control"
                                 placeholder="example@example.com"
+                                value={forgotPassword.values.email}
+                                onChange={forgotPassword.handleChange("email")}
+                                onBlur={forgotPassword.handleBlur("email")}
                               />
                             </div>
 
                             <div>
+                              <div className="text-danger text-end">
+                                {forgotPassword.touched.email &&
+                                  forgotPassword.errors.email}
+                              </div>
+
                               <button
                                 className="btn btn-dark btn-block w-100"
                                 type="submit"
+                                disabled={loading}
                               >
-                                Forgot Password
+                                {loading ? "Loading..." : "Forgot Password"}
                               </button>
                             </div>
 
@@ -76,7 +107,7 @@ const ForgotPassword = () => {
                                 className="mb-5 pb-lg-2"
                                 style={{ color: "#393f81" }}
                               >
-                                Don't have an account?{" "}
+                                Don't have an account?
                                 <NavLink to="/" style={{ color: "#0d6efd" }}>
                                   Back to Login
                                 </NavLink>

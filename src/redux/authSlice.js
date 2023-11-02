@@ -56,6 +56,31 @@ export const userProfileAction = createAsyncThunk(
   }
 );
 
+export const sendForgotPasswordEmail = createAsyncThunk(
+  "user/ForgotEmail",
+  async (email, { rejectWithValue, getState, dispatch }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        `${baseUrl}/Auth/ForgotPassword`,
+        email,
+        config
+      );
+      return response?.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Update Profile
 export const updateProfileAction = createAsyncThunk(
   "user/updateProfile",
@@ -156,22 +181,40 @@ const authSlices = createSlice({
       state.profileLoading = false;
     });
 
+    //Forgot Password
+    builder.addCase(sendForgotPasswordEmail.pending, (state, action) => {
+      state.loading = true;
+      state.profileAppErr = undefined;
+      state.profileServerErr = undefined;
+    });
+    builder.addCase(sendForgotPasswordEmail.fulfilled, (state, action) => {
+      state.profile = action?.payload;
+      state.loading = false;
+      state.profileAppErr = undefined;
+      state.profileServerErr = undefined;
+    });
+    builder.addCase(sendForgotPasswordEmail.rejected, (state, action) => {
+      state.profileAppErr = action?.payload?.message;
+      state.profileServerErr = action?.error?.message;
+      state.loading = false;
+    });
+
     //Update Profile
     builder.addCase(updateProfileAction.pending, (state, action) => {
-      state.profileLoading = true;
+      state.loading = true;
       state.profileAppErr = undefined;
       state.profileServerErr = undefined;
     });
     builder.addCase(updateProfileAction.fulfilled, (state, action) => {
       state.userAuth = action?.payload;
-      state.profileLoading = false;
+      state.loading = false;
       state.profileAppErr = undefined;
       state.profileServerErr = undefined;
     });
     builder.addCase(updateProfileAction.rejected, (state, action) => {
       state.profileAppErr = action?.payload?.message;
       state.profileServerErr = action?.error?.message;
-      state.profileLoading = false;
+      state.loading = false;
     });
 
     //Logout

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { NavLink, Navigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -8,6 +8,7 @@ import { loginUserAction } from "../../../redux/authSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -19,6 +20,7 @@ const Login = () => {
       password: Yup.string().required("Password is required"),
     }),
     onSubmit: (values) => {
+      setLoading(true);
       dispatch(loginUserAction(values));
     },
   });
@@ -120,8 +122,9 @@ const Login = () => {
                               <button
                                 className="btn btn-dark btn-block w-100"
                                 type="submit"
+                                disabled={loading}
                               >
-                                Login
+                                {loading ? "Loading..." : "Login"}
                               </button>
                             </div>
 

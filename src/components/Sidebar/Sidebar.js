@@ -8,24 +8,11 @@ const Sidebar = () => {
   let profileLinks = [
     {
       name: "Profile",
-      key: "update-profile",
       to: "/update-profile",
     },
     {
       name: "Password",
-      key: "update-password",
       to: "/update-password",
-    },
-  ];
-
-  let sidebarLinks = [
-    {
-      name: "Direct Links",
-      links: [
-        { text: "Dashboard", to: "/dashboard" },
-        { text: "Profile", to: "/profile" },
-        { text: "Settings", to: "/settings" },
-      ],
     },
   ];
 
@@ -61,7 +48,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div class="d-flex flex-column align-items-center align-items-sm-start text-white min-vh-100">
+      <div className="d-flex flex-column align-items-center align-items-sm-start text-white min-vh-100">
         <div
           className="custom-card-sidebar mb-3"
           style={{
@@ -83,7 +70,7 @@ const Sidebar = () => {
         </div>
         <div className="w-100 px-3">
           <ul
-            class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100"
+            className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100"
             id="menu"
           >
             <li className="w-100">
@@ -92,8 +79,8 @@ const Sidebar = () => {
                 data-bs-toggle="collapse"
                 className="nav-link text-white align-middle px-0"
               >
-                <i class="fs-4 bi-speedometer2"></i>{" "}
-                <span class="ms-1 d-none d-sm-inline">Manage Users</span>
+                <i className="fs-4 bi-speedometer2"></i>{" "}
+                <span className="ms-1 d-none d-sm-inline">Manage Users</span>
               </a>
               <ul
                 className={`collapse nav custom-collapse flex-column ${
@@ -135,10 +122,10 @@ const Sidebar = () => {
         </div>
         <div className="w-100 text-center">
           <hr />
-          <div class="dropdown pb-4">
+          <div className="dropdown pb-4">
             <a
               href="#"
-              class="align-items-center text-white text-decoration-none dropdown-toggle"
+              className="align-items-center text-white text-decoration-none dropdown-toggle"
               id="dropdownUser1"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -148,12 +135,12 @@ const Sidebar = () => {
                 alt="hugenerd"
                 width="30"
                 height="30"
-                class="rounded-circle"
+                className="rounded-circle"
               />
-              <span class="d-none d-sm-inline mx-1">loser</span>
+              <span className="d-none d-sm-inline mx-1">loser</span>
             </a>
             <ul
-              class="dropdown-menu dropdown-menu-dark text-small shadow"
+              className="dropdown-menu dropdown-menu-dark text-small shadow"
               aria-labelledby="dropdownUser1"
             >
               {profileLinks.map((item) => {
@@ -166,7 +153,7 @@ const Sidebar = () => {
                 );
               })}
               <li>
-                <hr class="dropdown-divider" />
+                <hr className="dropdown-divider" />
               </li>
               <li>
                 <Link
@@ -194,8 +181,8 @@ export default Sidebar;
 //                 )}`}
 //                 onClick={() => handleMenuClick("Home", false)}
 //               >
-//                 <i class="fs-4 bi-house"></i>{" "}
-//                 <span class="ms-1 d-none d-sm-inline">Home</span>
+//                 <i className="fs-4 bi-house"></i>{" "}
+//                 <span className="ms-1 d-none d-sm-inline">Home</span>
 //               </a>
 //             </li>
 //             <li className="w-100">
@@ -204,8 +191,8 @@ export default Sidebar;
 //                 data-bs-toggle="collapse"
 //                 className="nav-link text-white align-middle px-0"
 //               >
-//                 <i class="fs-4 bi-speedometer2"></i>{" "}
-//                 <span class="ms-1 d-none d-sm-inline">Dashboard</span>{" "}
+//                 <i className="fs-4 bi-speedometer2"></i>{" "}
+//                 <span className="ms-1 d-none d-sm-inline">Dashboard</span>{" "}
 //               </a>
 //               <ul
 //                 className={`collapse nav custom-collapse flex-column ${
@@ -221,7 +208,7 @@ export default Sidebar;
 //                     onClick={() => handleMenuClick("Item 1", true)}
 //                   >
 //                     {" "}
-//                     <span class="d-none d-sm-inline">Item</span> 1{" "}
+//                     <span className="d-none d-sm-inline">Item</span> 1{" "}
 //                   </a>
 //                 </li>
 
@@ -232,41 +219,41 @@ export default Sidebar;
 //                     onClick={() => handleMenuClick("Item 2", true)}
 //                   >
 //                     {" "}
-//                     <span class="d-none d-sm-inline">Item</span> 2{" "}
+//                     <span className="d-none d-sm-inline">Item</span> 2{" "}
 //                   </a>
 //                 </li>
 //               </ul>
 //             </li>
 //             <li className={`nav-item ${isMenuActive("Home")} w-100`}>
-//               <a href="#" class="nav-link text-white px-0 align-middle">
-//                 <i class="fs-4 bi-table"></i>{" "}
-//                 <span class="ms-1 d-none d-sm-inline">Orders</span>
+//               <a href="#" className="nav-link text-white px-0 align-middle">
+//                 <i className="fs-4 bi-table"></i>{" "}
+//                 <span className="ms-1 d-none d-sm-inline">Orders</span>
 //               </a>
 //             </li>
 //             <li>
 //               <a
 //                 href="#submenu2"
 //                 data-bs-toggle="collapse"
-//                 class="nav-link text-white px-0 align-middle "
+//                 className="nav-link text-white px-0 align-middle "
 //               >
-//                 <i class="fs-4 bi-bootstrap"></i>{" "}
-//                 <span class="ms-1 d-none d-sm-inline">Bootstrap</span>
+//                 <i className="fs-4 bi-bootstrap"></i>{" "}
+//                 <span className="ms-1 d-none d-sm-inline">Bootstrap</span>
 //               </a>
 //               <ul
-//                 class="collapse nav custom-collapse flex-column ms-1"
+//                 className="collapse nav custom-collapse flex-column ms-1"
 //                 id="submenu2"
 //                 data-bs-parent="#menu"
 //               >
-//                 <li class="w-100">
-//                   <a href="#" class="nav-link text-white px-0">
+//                 <li className="w-100">
+//                   <a href="#" className="nav-link text-white px-0">
 //                     {" "}
-//                     <span class="d-none d-sm-inline">Item</span> 1
+//                     <span className="d-none d-sm-inline">Item</span> 1
 //                   </a>
 //                 </li>
 //                 <li>
-//                   <a href="#" class="nav-link text-white px-0">
+//                   <a href="#" className="nav-link text-white px-0">
 //                     {" "}
-//                     <span class="d-none d-sm-inline">Item</span> 2
+//                     <span className="d-none d-sm-inline">Item</span> 2
 //                   </a>
 //                 </li>
 //               </ul>
@@ -275,45 +262,45 @@ export default Sidebar;
 //               <a
 //                 href="#submenu3"
 //                 data-bs-toggle="collapse"
-//                 class="nav-link text-white px-0 align-middle"
+//                 className="nav-link text-white px-0 align-middle"
 //               >
-//                 <i class="fs-4 bi-grid"></i>{" "}
-//                 <span class="ms-1 d-none d-sm-inline">Products</span>{" "}
+//                 <i className="fs-4 bi-grid"></i>{" "}
+//                 <span className="ms-1 d-none d-sm-inline">Products</span>{" "}
 //               </a>
 //               <ul
-//                 class="collapse nav custom-collapse flex-column ms-1"
+//                 className="collapse nav custom-collapse flex-column ms-1"
 //                 id="submenu3"
 //                 data-bs-parent="#menu"
 //               >
-//                 <li class="w-100">
-//                   <a href="#" class="nav-link text-white px-0">
+//                 <li className="w-100">
+//                   <a href="#" className="nav-link text-white px-0">
 //                     {" "}
-//                     <span class="d-none d-sm-inline">Product</span> 1
+//                     <span className="d-none d-sm-inline">Product</span> 1
 //                   </a>
 //                 </li>
 //                 <li>
-//                   <a href="#" class="nav-link text-white px-0">
+//                   <a href="#" className="nav-link text-white px-0">
 //                     {" "}
-//                     <span class="d-none d-sm-inline">Product</span> 2
+//                     <span className="d-none d-sm-inline">Product</span> 2
 //                   </a>
 //                 </li>
 //                 <li>
-//                   <a href="#" class="nav-link text-white px-0">
+//                   <a href="#" className="nav-link text-white px-0">
 //                     {" "}
-//                     <span class="d-none d-sm-inline">Product</span> 3
+//                     <span className="d-none d-sm-inline">Product</span> 3
 //                   </a>
 //                 </li>
 //                 <li>
-//                   <a href="#" class="nav-link text-white px-0">
+//                   <a href="#" className="nav-link text-white px-0">
 //                     {" "}
-//                     <span class="d-none d-sm-inline">Product</span> 4
+//                     <span className="d-none d-sm-inline">Product</span> 4
 //                   </a>
 //                 </li>
 //               </ul>
 //             </li>
 //             <li>
-//               <a href="#" class="nav-link text-white px-0 align-middle">
-//                 <i class="fs-4 bi-people"></i>{" "}
-//                 <span class="ms-1 d-none d-sm-inline">Customers</span>{" "}
+//               <a href="#" className="nav-link text-white px-0 align-middle">
+//                 <i className="fs-4 bi-people"></i>{" "}
+//                 <span className="ms-1 d-none d-sm-inline">Customers</span>{" "}
 //               </a>
 //             </li>
