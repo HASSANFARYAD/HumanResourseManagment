@@ -1,8 +1,8 @@
 import React from "react";
 import "./Login.css";
-import { Form, Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
-const Login = ({ onRegisterClick }) => {
+const Login = () => {
   return (
     <>
       <section className="vh-100" style={{ backgroundColor: "#9A616D" }}>
@@ -74,12 +74,12 @@ const Login = ({ onRegisterClick }) => {
 
                             <div>
                               <div className="text-end">
-                                <a
+                                <NavLink
                                   className="small text-muted text-end"
-                                  href="#!"
+                                  to="/forgot-password"
                                 >
                                   Forgot password?
-                                </a>
+                                </NavLink>
                               </div>
                               <button
                                 className="btn btn-dark btn-block w-100"
@@ -95,13 +95,12 @@ const Login = ({ onRegisterClick }) => {
                                 style={{ color: "#393f81" }}
                               >
                                 Don't have an account?{" "}
-                                <a
-                                  type="button"
-                                  onClick={onRegisterClick}
+                                <NavLink
+                                  to="/register"
                                   style={{ color: "#0d6efd" }}
                                 >
                                   Register here
-                                </a>
+                                </NavLink>
                               </p>
                             </div>
                           </div>

@@ -15,7 +15,7 @@ const fields = [
 function UserList() {
   return (
     <div className="table-responsive">
-      <Datatable data={data} fields={fields} />
+      <Datatable />
     </div>
   );
 }

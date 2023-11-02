@@ -1,6 +1,6 @@
 import React from "react";
 import "../Login/Login.css";
-import { Form, Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 const ForgotPassword = () => {
   return (
@@ -77,9 +77,9 @@ const ForgotPassword = () => {
                                 style={{ color: "#393f81" }}
                               >
                                 Don't have an account?{" "}
-                                <a type="button" style={{ color: "#0d6efd" }}>
+                                <NavLink to="/" style={{ color: "#0d6efd" }}>
                                   Back to Login
-                                </a>
+                                </NavLink>
                               </p>
                             </div>
                           </div>

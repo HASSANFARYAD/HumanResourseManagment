@@ -1,6 +1,7 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-const Register = ({ onLoginClick }) => {
+const Register = () => {
   return (
     <>
       <section className="" style={{ backgroundColor: "#9A616D" }}>
@@ -122,13 +123,9 @@ const Register = ({ onLoginClick }) => {
                                 style={{ color: "#393f81" }}
                               >
                                 Already have Account?{" "}
-                                <a
-                                  type="button"
-                                  style={{ color: "#0d6efd" }}
-                                  onClick={onLoginClick}
-                                >
+                                <NavLink to="/" style={{ color: "#0d6efd" }}>
                                   Login Here
-                                </a>
+                                </NavLink>
                               </p>
                             </div>
                           </div>
