@@ -1,10 +1,35 @@
-.App {
-  text-align: center;
+.app {
+  background-image: url(./logo.svg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app-content {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.custom-card-sidebar {
+  border-bottom: 1px solid #f7f7f7;
+}
+
+.custom-collapse > li > a {
+  padding-left: 40px !important;
+}
+
+.nav-item .nav-link {
+  cursor: pointer !important;
+}
+
+ul > li > ul.custom-collapse > ul > li {
+  padding: 5px 0;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #61dafb !important;
+  background: none !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {

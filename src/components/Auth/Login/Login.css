@@ -1,0 +1,22 @@
+/* LoginPage.css */
+
+.login-page {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #9a616d;
+}
+
+.login-page input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.login-page button:hover {
+  background-color: #0069d9;
+  cursor: pointer;
+}
