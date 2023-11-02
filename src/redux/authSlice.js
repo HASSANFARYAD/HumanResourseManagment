@@ -34,7 +34,7 @@ export const loginUserAction = createAsyncThunk(
 export const userProfileAction = createAsyncThunk(
   "user/profile",
   async (id, { rejectWithValue, getState, dispatch }) => {
-    const user = getState()?.auth?.userAuth;
+    const user = getState()?.auth?.userAuth?.data;
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -46,7 +46,7 @@ export const userProfileAction = createAsyncThunk(
         `${baseUrl}/Admin/GetUserById?id=${id}`,
         config
       );
-      return response?.data;
+      return response?.data?.data;
     } catch (error) {
       if (!error?.response) {
         throw error;

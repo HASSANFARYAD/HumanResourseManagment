@@ -8,7 +8,6 @@ import { loginUserAction } from "../../../redux/authSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -20,12 +19,14 @@ const Login = () => {
       password: Yup.string().required("Password is required"),
     }),
     onSubmit: (values) => {
-      setLoading(true);
-      dispatch(loginUserAction(values));
+      try {
+        dispatch(loginUserAction(values));
+      } catch (error) {}
     },
   });
 
   const data = useSelector((state) => state?.auth?.userAuth);
+  const loading = useSelector((state) => state.auth.loading);
   if (data) {
     return <Navigate to="/dashboard" />;
   }
@@ -119,13 +120,22 @@ const Login = () => {
                                   Forgot password?
                                 </NavLink>
                               </div>
-                              <button
-                                className="btn btn-dark btn-block w-100"
-                                type="submit"
-                                disabled={loading}
-                              >
-                                {loading ? "Loading..." : "Login"}
-                              </button>
+                              {loading ? (
+                                <button
+                                  className="btn btn-dark btn-block w-100"
+                                  type="submit"
+                                  disabled
+                                >
+                                  Loading...
+                                </button>
+                              ) : (
+                                <button
+                                  className="btn btn-dark btn-block w-100"
+                                  type="submit"
+                                >
+                                  Login
+                                </button>
+                              )}
                             </div>
 
                             <div>
