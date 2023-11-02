@@ -30,7 +30,7 @@ function classNames(...classes) {
 const AdminNavbar = ({ isLogin }) => {
   //Navigation
   const userNavigation = [
-    { name: "Your Profile", href: `/profile/${isLogin?._id}` },
+    { name: "Your Profile", href: `/profile/${isLogin?.userEncId}` },
     { name: "Change your password", href: "/update-password" },
     { name: "Settings", href: "/update-password" },
   ];
@@ -116,7 +116,7 @@ const AdminNavbar = ({ isLogin }) => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={isLogin?.profilePhoto}
+                              src={isLogin?.profilePicture}
                               alt="Admin Profile"
                             />
                           </Menu.Button>
@@ -185,8 +185,8 @@ const AdminNavbar = ({ isLogin }) => {
                   {/* Image */}
                   <img
                     className="h-10 w-10 rounded-full"
-                    src={isLogin?.profilePhoto}
-                    alt={isLogin?.firstName}
+                    src={isLogin?.profilePicture}
+                    alt={isLogin?.userName}
                   />
                 </div>
                 <div className="ml-3">
