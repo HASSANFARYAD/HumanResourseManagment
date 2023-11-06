@@ -1,6 +1,5 @@
 import React from "react";
 import "./Loader.css";
-import loader from "./loader.gif";
 
 const Loader = () => {
   return (

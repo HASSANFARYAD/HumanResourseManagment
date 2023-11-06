@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl = "http://usman78056-001-site7.gtempurl.com/api/";
+//const baseUrl = "http://usman78056-001-site7.gtempurl.com/api/";
+const baseUrl = "https://localhost:7240/api/";
 
 //Login
 export const loginUserAction = createAsyncThunk(
@@ -21,32 +22,6 @@ export const loginUserAction = createAsyncThunk(
       const data = response.data;
       localStorage.setItem("userInfo", JSON.stringify(data));
       return data;
-    } catch (error) {
-      if (!error?.response) {
-        throw error;
-      }
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
-// Profile
-export const userProfileAction = createAsyncThunk(
-  "user/profile",
-  async (id, { rejectWithValue, getState, dispatch }) => {
-    const user = getState()?.auth?.userAuth?.data;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    };
-
-    try {
-      const response = await axios.get(
-        `${baseUrl}/Admin/GetUserById?id=${id}`,
-        config
-      );
-      return response?.data?.data;
     } catch (error) {
       if (!error?.response) {
         throw error;
@@ -81,16 +56,41 @@ export const sendForgotPasswordEmail = createAsyncThunk(
   }
 );
 
+// Profile
+export const userProfileAction = createAsyncThunk(
+  "user/profile",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    const user = getState()?.auth?.userAuth?.data;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+
+    try {
+      const response = await axios.get(
+        `${baseUrl}Admin/GetUserById?id=${id}`,
+        config
+      );
+      return response?.data?.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Update Profile
 export const updateProfileAction = createAsyncThunk(
   "user/updateProfile",
   async (users, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const user = getState()?.auth;
-    const { userAuth } = user;
+    const user = getState()?.auth?.userAuth?.data;
     const config = {
       headers: {
-        Authorization: `Bearer ${userAuth?.token}`,
+        Authorization: `Bearer ${user?.token}`,
       },
     };
 
@@ -102,6 +102,67 @@ export const updateProfileAction = createAsyncThunk(
       );
       console.log("Profile Update:", response);
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      return response?.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+// Update or Delete Profile Image
+export const updateProfileImage = createAsyncThunk(
+  "user/updateProfileImage",
+  async (user, { rejectWithValue, getState, dispatch }) => {
+    const formData = new FormData();
+    formData.append("file", user.file);
+    //get user token
+    const users = getState()?.auth?.userAuth?.data;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${users?.token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    try {
+      const response = await axios.put(
+        `${baseUrl}Admin/UploadPicture?UserId=${user.UserId}`,
+        formData,
+        config
+      );
+      console.log("Profile Image:", response);
+      return response?.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//Update Password
+export const updatePasswordAction = createAsyncThunk(
+  "user/updatePassword",
+  async (password, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.auth?.userAuth?.data;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user?.token}`,
+      },
+    };
+
+    try {
+      const response = await axios.put(
+        `${baseUrl}/Auth/UpdatePassword`,
+        password,
+        config
+      );
+      console.log("Password Update:", response);
       return response?.data;
     } catch (error) {
       if (!error?.response) {
@@ -140,6 +201,8 @@ const authSlices = createSlice({
     userAuth: userLoginFromStorage,
     loading: false,
     appErr: null,
+    appStatus: null,
+    appStatusCode: null,
     serverErr: null,
   },
   extraReducers: (builder) => {
@@ -147,19 +210,25 @@ const authSlices = createSlice({
 
     //login
     builder.addCase(loginUserAction.pending, (state, action) => {
-      state.loading = true;
       state.appErr = undefined;
+      state.loading = true;
       state.serverErr = undefined;
+      state.appStatus = action?.payload?.status;
+      state.appStatusCode = action?.payload?.statusCode;
     });
     builder.addCase(loginUserAction.fulfilled, (state, action) => {
       state.userAuth = action?.payload;
-      state.loading = false;
       state.appErr = undefined;
+      state.loading = false;
       state.serverErr = undefined;
+      state.appStatus = action?.payload?.status;
+      state.appStatusCode = action?.payload?.statusCode;
     });
     builder.addCase(loginUserAction.rejected, (state, action) => {
       state.appErr = action?.payload?.message;
-      state.serverErr = action?.error?.message;
+      state.serverErr = undefined;
+      state.appStatus = action?.payload?.status;
+      state.appStatusCode = action?.payload?.statusCode;
       state.loading = false;
     });
 
@@ -172,13 +241,37 @@ const authSlices = createSlice({
     builder.addCase(userProfileAction.fulfilled, (state, action) => {
       state.profile = action?.payload;
       state.profileLoading = false;
-      state.profileAppErr = undefined;
-      state.profileServerErr = undefined;
+      state.profileAppErr = action?.payload?.message;
+      state.profileServerErr = action?.error?.message;
     });
     builder.addCase(userProfileAction.rejected, (state, action) => {
       state.profileAppErr = action?.payload?.message;
       state.profileServerErr = action?.error?.message;
       state.profileLoading = false;
+    });
+
+    //Update/Delete Profile Image
+    builder.addCase(updateProfileImage.pending, (state, action) => {
+      state.profileLoading = true;
+      state.profileAppErr = undefined;
+      state.profileServerErr = undefined;
+      state.appStatus = action?.payload?.status;
+      state.appStatusCode = action?.payload?.statusCode;
+    });
+    builder.addCase(updateProfileImage.fulfilled, (state, action) => {
+      state.profile = action?.payload;
+      state.profileLoading = false;
+      state.profileAppErr = action?.payload?.message;
+      state.profileServerErr = action?.error?.message;
+      state.appStatus = action?.payload?.status;
+      state.appStatusCode = action?.payload?.statusCode;
+    });
+    builder.addCase(updateProfileImage.rejected, (state, action) => {
+      state.profileAppErr = action?.payload?.message;
+      state.profileServerErr = action?.error?.message;
+      state.profileLoading = false;
+      state.appStatus = action?.payload?.status;
+      state.appStatusCode = action?.payload?.statusCode;
     });
 
     //Forgot Password
@@ -215,6 +308,29 @@ const authSlices = createSlice({
       state.profileAppErr = action?.payload?.message;
       state.profileServerErr = action?.error?.message;
       state.loading = false;
+    });
+
+    //Update Password
+    builder.addCase(updatePasswordAction.pending, (state, action) => {
+      state.loading = true;
+      state.appStatusCode = undefined;
+      state.profileAppErr = undefined;
+      state.profileAppErr = undefined;
+      state.profileServerErr = undefined;
+    });
+    builder.addCase(updatePasswordAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.appStatus = false;
+      state.appStatusCode = undefined;
+      state.profileAppErr = undefined;
+      state.profileServerErr = undefined;
+    });
+    builder.addCase(updatePasswordAction.rejected, (state, action) => {
+      state.appErr = action?.payload?.message;
+      state.loading = false;
+      state.serverErr = undefined;
+      state.appStatus = action?.payload?.status;
+      state.appStatusCode = action?.payload?.statusCode;
     });
 
     //Logout

@@ -1,13 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Sidebar/Sidebar";
 import { Outlet } from "react-router";
 
 const Index = (props) => {
-  const [isComponentVisible, setComponentVisibility] = useState("");
-  const toggleUserComponents = (selectedComponent) => {
-    setComponentVisibility(selectedComponent);
-  };
   return (
     <>
       <div>

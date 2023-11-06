@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { NavLink, Navigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { loginUserAction } from "../../../redux/authSlice";
+import SweetAlert from "../../Dynamic/SweetAlert/SweetAlert";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const [message, setMessage] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -18,19 +20,28 @@ const Login = () => {
       email: Yup.string().required("Email/Username is required"),
       password: Yup.string().required("Password is required"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
-        dispatch(loginUserAction(values));
+        const action = dispatch(loginUserAction(values));
+        const resultAction = await action;
+        if (loginUserAction.rejected.match(resultAction)) {
+          setMessage(resultAction?.payload?.message);
+        }
       } catch (error) {}
     },
   });
 
   const data = useSelector((state) => state?.auth?.userAuth);
   const loading = useSelector((state) => state.auth.loading);
+
+  useEffect(() => {
+    setMessage("");
+  }, []);
+
   if (data) {
     return <Navigate to="/dashboard" />;
   }
-
+  console.log(message);
   return (
     <>
       <section className="vh-100" style={{ backgroundColor: "#9A616D" }}>
@@ -129,12 +140,24 @@ const Login = () => {
                                   Loading...
                                 </button>
                               ) : (
-                                <button
-                                  className="btn btn-dark btn-block w-100"
-                                  type="submit"
-                                >
-                                  Login
-                                </button>
+                                <>
+                                  <button
+                                    className="btn btn-dark btn-block w-100"
+                                    type="submit"
+                                  >
+                                    Login
+                                  </button>
+                                  {message && (
+                                    <>
+                                      <SweetAlert
+                                        params={{
+                                          type: "error",
+                                          title: message,
+                                        }}
+                                      />
+                                    </>
+                                  )}
+                                </>
                               )}
                             </div>
 
