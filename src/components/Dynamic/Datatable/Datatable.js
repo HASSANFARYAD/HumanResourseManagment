@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
+import { useDispatch } from "react-redux";
+import { usersListAction } from "../../../redux/adminSlice";
+import { toast } from "react-toastify";
 
-const Datatable = () => {
+const Datatable = (prop) => {
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
@@ -12,13 +16,30 @@ const Datatable = () => {
   const fetchUsers = async (page, size = perPage, sortColumn, sortOrder) => {
     setLoading(true);
 
-    const response = await axios.get(
-      `https://reqres.in/api/users?page=${page}&per_page=${size}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&delay=1`
-    );
+    try {
+      const response = await dispatch(
+        usersListAction({
+          Role: 3,
+          page,
+          size,
+          sortColumn,
+          sortOrder,
+        })
+      );
 
-    setData(response.data.data);
-    setTotalRows(response.data.total);
-    setLoading(false);
+      if (usersListAction.fulfilled.match(response)) {
+        setData(response?.payload?.data?.data);
+        setTotalRows(response?.payload?.data.total);
+      } else {
+        toast.error(response?.payload?.message);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      // Handle any errors here
+      console.error("Error fetching users:", error);
+      toast.error("An error occurred while fetching users.");
+    }
   };
 
   useEffect(() => {
@@ -28,17 +49,22 @@ const Datatable = () => {
   const columns = [
     {
       name: "First Name",
-      selector: (row) => row.first_name,
+      selector: "firstName",
       sortable: true,
     },
     {
       name: "Last Name",
-      selector: (row) => row.last_name,
+      selector: "lastName",
       sortable: true,
     },
     {
       name: "Email",
-      selector: (row) => row.email,
+      selector: "email",
+      sortable: true,
+    },
+    {
+      name: "Username",
+      selector: "userName",
       sortable: true,
     },
     {
@@ -57,25 +83,34 @@ const Datatable = () => {
   };
 
   const handleSort = (column, direction) => {
-    fetchUsers(currentPage, perPage, column.selector, direction);
+    const sortColumn = column.selector;
+    const sortDirection = direction === "asc" ? "asc" : "desc";
+    fetchUsers(currentPage, perPage, sortColumn, sortDirection);
+  };
+
+  const handleSearch = (e) => {
+    console.log("e:", e.target.value);
+    const filterArray = data.filter((item) =>
+      item.first_name.includes(e.target.value)
+    );
+    console.log("filterArray:", filterArray);
+    setData(filterArray);
   };
 
   return (
-    <DataTable
-      title="Users"
-      columns={columns}
-      data={data}
-      progressPending={loading}
-      pagination
-      paginationServer
-      paginationTotalRows={totalRows}
-      paginationDefaultPage={currentPage}
-      onChangeRowsPerPage={handlePerRowsChange}
-      onChangePage={handlePageChange}
-      onSort={handleSort}
-      selectableRows
-      onSelectedRowsChange={({ selectedRows }) => console.log(selectedRows)}
-    />
+    <>
+      <input type="text" onChange={handleSearch} />
+      <DataTable
+        title={prop.title}
+        columns={prop.columns}
+        data={prop.data}
+        progressPending={prop.loading}
+        pagination
+        paginationServer
+        paginationTotalRows={prop.totalRows}
+        paginationDefaultPage={prop.currentPage}
+      />
+    </>
   );
 };
 

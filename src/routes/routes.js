@@ -28,7 +28,7 @@ const AppRoutes = () => {
               <Route path="/update-profile" element={<UserProfile />} />
               <Route path="/update-password" element={<UpdatePassword />} />
               <Route path="/add-user" element={<AddUser />} />
-              <Route path="/users" element={<UserList />} />
+              <Route path="/users-list" element={<UserList />} />
             </Route>
           </Route>
           <Route path="/auth" element={<AuthIndex />} />
