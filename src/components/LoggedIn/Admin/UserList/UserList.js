@@ -11,8 +11,17 @@ function UserList() {
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setsortColumn] = useState();
+  const [sortDirection, setSortDirection] = useState();
+  const [searchParam, setSearchParam] = useState("");
 
-  const fetchUsers = async (page, size = perPage, sortColumn, sortOrder) => {
+  const fetchUsers = async (
+    page,
+    size = perPage,
+    sortColumn,
+    sortOrder,
+    searchParam
+  ) => {
     setLoading(true);
 
     try {
@@ -23,6 +32,7 @@ function UserList() {
           size,
           sortColumn,
           sortOrder,
+          searchParam,
         })
       );
 
@@ -41,8 +51,8 @@ function UserList() {
   };
 
   useEffect(() => {
-    fetchUsers(1);
-  }, []);
+    fetchUsers(currentPage, perPage, sortColumn, sortDirection, searchParam);
+  }, [currentPage, perPage, sortColumn, sortDirection, searchParam]);
 
   const handlePageChange = (page) => {
     fetchUsers(page);
@@ -55,18 +65,13 @@ function UserList() {
   };
 
   const handleSort = (column, direction) => {
-    const sortColumn = column.selector;
-    const sortDirection = direction === "asc" ? "asc" : "desc";
+    setsortColumn(column.selector);
+    setSortDirection(direction === "asc" ? "asc" : "desc");
     fetchUsers(currentPage, perPage, sortColumn, sortDirection);
   };
 
   const handleSearch = (e) => {
-    console.log("e:", e.target.value);
-    const filterArray = data.filter((item) =>
-      item.first_name.includes(e.target.value)
-    );
-    console.log("filterArray:", filterArray);
-    setData(filterArray);
+    setSearchParam(e.target.value ? e.target.value : "");
   };
 
   const columns = [
@@ -123,10 +128,13 @@ function UserList() {
 
   return (
     <div className="table-responsive">
+      <input type="text" onChange={handleSearch} />
       <Datatable
         title="Users Lists"
         columns={columns}
         data={data}
+        pagination
+        paginationServer
         progressPending={loading}
         paginationTotalRows={totalRows}
         paginationDefaultPage={currentPage}

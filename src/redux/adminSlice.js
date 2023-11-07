@@ -58,7 +58,7 @@ export const addUserAction = createAsyncThunk(
 export const usersListAction = createAsyncThunk(
   "user/usersList",
   async (
-    { Role, page, size, sortColumn, sortOrder },
+    { Role, page, size, sortColumn, sortOrder, searchParam },
     { rejectWithValue, getState, dispatch }
   ) => {
     const user = getState()?.auth?.userAuth?.data;
@@ -71,7 +71,8 @@ export const usersListAction = createAsyncThunk(
 
     try {
       const response = await axios.post(
-        `${baseUrl}Admin/GetUsersList?Role=${Role}&currentPage=${page}&perPage=${size}&sortColumn=${sortColumn}&sortDirection=${sortOrder}`,
+        `${baseUrl}Admin/GetUsersList?Role=${Role}&currentPage=${page}&perPage=${size}&sortColumn=${sortColumn}
+        &sortDirection=${sortOrder}&searchParam=${searchParam}`,
         null, // Pass null as the second argument, and include config in the third argument
         config
       );
