@@ -274,10 +274,10 @@ const Navbar = () => {
               className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
               aria-labelledby="userDropdown"
             >
-              {profileLinks.map((item) => {
+              {profileLinks.map((item, index) => {
                 return (
                   <>
-                    <NavLink to={item.to} className="dropdown-item">
+                    <NavLink to={item.to} key={index} className="dropdown-item">
                       <i className={item.icon}></i>
                       {item.name}
                     </NavLink>

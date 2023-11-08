@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { logoutAction } from "../../redux/authSlice";
+import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import "./Sidebar.css";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
