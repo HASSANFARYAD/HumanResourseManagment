@@ -35,6 +35,7 @@ export const addUserAction = createAsyncThunk(
     const config = {
       headers: {
         Authorization: `Bearer ${user?.token}`,
+        Role: "Admin",
       },
     };
 
