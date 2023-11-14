@@ -6,12 +6,11 @@ import { addUserAction } from "../../../../redux/adminSlice.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import StepForm from "../Form/StepForm.js";
+import StepForm from "../../../Dynamic/Form/StepForm.js";
 import { FormAddUserFormValidation } from "../../../validations/FormValidations.js";
 
 const AddUser = () => {
   const dispatch = useDispatch();
-  const [isAdding, setIsAdding] = useState(false);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const minDate = new Date();
@@ -45,6 +44,12 @@ const AddUser = () => {
         { id: "email", label: "Email", type: "email" },
         { id: "password", label: "Password", type: "password" },
         { id: "description", label: "About", type: "textarea" },
+        {
+          id: "role",
+          label: "Select Role",
+          type: "select",
+          options: ["Select Role", "Admin", "Employee", "Customer", "Valet"],
+        },
       ],
     },
     {
