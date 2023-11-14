@@ -173,7 +173,7 @@ const Navbar = () => {
                 <div className="dropdown-list-image mr-3">
                   <img
                     className="rounded-circle"
-                    src={user?.data?.profilePicture}
+                    src={user?.data?.profile}
                     alt="..."
                   />
                   <div className="status-indicator bg-success"></div>
@@ -262,12 +262,9 @@ const Navbar = () => {
               aria-expanded="false"
             >
               <span className="mr-2 d-none d-lg-inline text-gray-600 small">
-                {user?.data?.firstName + " " + user?.data?.lastName}
+                {user?.firstName + " " + user?.lastName}
               </span>
-              <img
-                className="img-profile rounded-circle"
-                src={user?.data?.profilePicture}
-              />
+              <img className="img-profile rounded-circle" src={user?.profile} />
             </a>
 
             <div

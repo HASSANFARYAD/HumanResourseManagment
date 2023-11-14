@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 
 const StepForm = ({ steps, formik, disabled }) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [errors, setError] = useState("");
   const totalSteps = steps.length;
 
   const nextStep = () => {
@@ -12,7 +11,7 @@ const StepForm = ({ steps, formik, disabled }) => {
     const currentStepErrors = currentStepFields
       .map((field) => formik.errors[field.id])
       .filter(Boolean);
-    if (currentStepErrors.length == 0) {
+    if (currentStepErrors.length === 0) {
       setCurrentStep(currentStep + 1);
     } else {
       const firstError = currentStepErrors[0];

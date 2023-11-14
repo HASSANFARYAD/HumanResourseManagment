@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { handleApiError, getResponse } from "../utils/utility";
 
 //const baseUrl = "http://usman78056-001-site7.gtempurl.com/api/";
-const baseUrl = "https://localhost:7240/api/";
+const baseUrl = "https://localhost:7093/api/";
 
 //Login
 export const loginUserAction = createAsyncThunk(
-  "user/login", //use in redux to identify the specify the method to call
+  "user/login",
   async (userData, { rejectWithValue, getState, dispatch }) => {
     const config = {
       headers: {
@@ -19,14 +20,10 @@ export const loginUserAction = createAsyncThunk(
         userData,
         config
       );
-      const data = response.data;
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      return data;
+      const responseBack = getResponse(response, dispatch);
+      return responseBack;
     } catch (error) {
-      if (!error?.response) {
-        throw error;
-      }
-      return rejectWithValue(error?.response?.data);
+      handleApiError(error, dispatch);
     }
   }
 );
@@ -60,7 +57,7 @@ export const sendForgotPasswordEmail = createAsyncThunk(
 export const userProfileAction = createAsyncThunk(
   "user/profile",
   async (id, { rejectWithValue, getState, dispatch }) => {
-    const user = getState()?.auth?.userAuth?.data;
+    const user = getState()?.auth?.userAuth;
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -69,15 +66,13 @@ export const userProfileAction = createAsyncThunk(
 
     try {
       const response = await axios.get(
-        `${baseUrl}Admin/GetUserById?id=${id}`,
+        `${baseUrl}Auth/GetLoggedinUser?id=${id}`,
         config
       );
-      return response?.data?.data;
+      const responseBack = getResponse(response, dispatch, user);
+      return responseBack;
     } catch (error) {
-      if (!error?.response) {
-        throw error;
-      }
-      return rejectWithValue(error?.response?.data);
+      handleApiError(error, dispatch, user);
     }
   }
 );

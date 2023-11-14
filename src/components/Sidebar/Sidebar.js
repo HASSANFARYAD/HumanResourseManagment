@@ -1,50 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 const Sidebar = () => {
-  const dispatch = useDispatch();
-  let profileLinks = [
-    {
-      name: "Profile",
-      to: "/update-profile",
-    },
-    {
-      name: "Password",
-      to: "/update-password",
-    },
-  ];
-
-  const [activeMenu, setActiveMenu] = useState(null);
-  const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
-
-  useEffect(() => {
-    const storedActiveMenu = localStorage.getItem("activeMenu");
-    const isDropdownOpen = localStorage.getItem("isDropdownOpen");
-    if (storedActiveMenu) {
-      setActiveMenu(storedActiveMenu);
-    }
-    if (isDropdownOpen) {
-      setDropdownIsOpen(true);
-    }
-  }, []);
-
-  const handleMenuClick = (menuName, isDropdownitem) => {
-    if (isDropdownitem) {
-      setDropdownIsOpen(isDropdownitem);
-      localStorage.setItem("isDropdownOpen", isDropdownitem);
-    } else {
-      localStorage.removeItem("isDropdownOpen");
-      setDropdownIsOpen(false);
-    }
-    setActiveMenu(menuName);
-    localStorage.setItem("activeMenu", menuName);
-  };
-
-  const isMenuActive = (menuName) => {
-    return activeMenu === menuName ? "active" : "";
-  };
-
   return (
     <>
       <ul

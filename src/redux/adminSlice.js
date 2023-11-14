@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { handleApiError, getResponse } from "../utils/utility";
 
 //const baseUrl = "http://usman78056-001-site7.gtempurl.com/api/";
-const baseUrl = "https://localhost:7240/api/";
+const baseUrl = "https://localhost:7093/api/";
 
 //Get Count
 export const dashboardCounts = createAsyncThunk(
@@ -19,10 +20,7 @@ export const dashboardCounts = createAsyncThunk(
       const data = response?.data?.data;
       return data;
     } catch (error) {
-      if (!error?.response) {
-        throw error;
-      }
-      return rejectWithValue(error?.response?.data);
+      handleApiError(error, dispatch, user);
     }
   }
 );
@@ -45,12 +43,9 @@ export const addUserAction = createAsyncThunk(
         users,
         config
       );
-      return response?.data;
+      return getResponse(response, dispatch, user);
     } catch (error) {
-      if (!error?.response) {
-        throw error;
-      }
-      return rejectWithValue(error?.response?.data);
+      handleApiError(error, dispatch, user);
     }
   }
 );

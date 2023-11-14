@@ -10,12 +10,12 @@ import { NavLink } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
-  const loggedInUser = useSelector((state) => state?.auth?.userAuth?.data);
+  const loggedInUser = useSelector((state) => state?.auth?.userAuth);
   const [responseData, setResponseData] = useState(null);
   const [message, setMessage] = useState("");
 

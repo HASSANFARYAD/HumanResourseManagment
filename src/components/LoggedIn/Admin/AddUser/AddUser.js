@@ -3,9 +3,6 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { addUserAction } from "../../../../redux/adminSlice.js";
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 import StepForm from "../../../Dynamic/Form/StepForm.js";
 import { FormAddUserFormValidation } from "../../../validations/FormValidations.js";
 
@@ -105,16 +102,7 @@ const AddUser = () => {
       console.log("values", values);
       setButtonDisabled(true);
       try {
-        const response = await dispatch(addUserAction(values));
-        if (addUserAction.fulfilled.match(response)) {
-          if (response.payload.status) {
-            toast.success(response.payload.message);
-          } else {
-            toast.error(response.payload.message);
-          }
-        }
-      } catch (error) {
-        toast.error(error.message || "An error occurred");
+        await dispatch(addUserAction(values));
       } finally {
         setButtonDisabled(false);
       }

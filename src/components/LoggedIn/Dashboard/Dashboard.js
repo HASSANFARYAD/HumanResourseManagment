@@ -1,9 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import AdminDashboard from "../Admin/AdminDashboard/AdminDashboard";
 
 const Dashboard = () => {
-  const loggedInUser = useSelector((state) => state?.auth?.userAuth?.data);
+  const loggedInUser = useSelector((state) => state?.auth?.userAuth);
 
   return (
     <>
