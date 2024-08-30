@@ -1,0 +1,52 @@
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider,
+  } from "react-router-dom";
+
+  import AdminDashboard from "../pages/Dashboard/adminDashboard";
+  import UserDashboard from "../pages/Dashboard/userDashboard";
+
+  import Login from "../pages/Auth/Login/Login";
+  import UpdateProfile from "../pages/Auth/Profile/UpdateProfile";
+  import UpdatePassword from "../pages/Auth/Profile/UpdatePassword";
+
+  import ForgotPassword from "../pages/Auth/ForgotPassword/ForgotPassword";
+  import ResetPassword from "../pages/Auth/ForgotPassword/ResetPassword";
+
+  import AuthLayout from "../components/Layouts/layout-auth";
+  import RootLayout from "../components/Layouts/layout-root";
+  import ProtectedLayout from "../components/Layouts/protected";
+
+  const createRoute = createBrowserRouter(
+    createRoutesFromElements(
+        <>
+            <Route element={<AuthLayout/>}>
+                <Route path="/" element={<Login />} />
+                <Route path="reset-password/:token?" element={<ResetPassword />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
+            </Route>
+            <Route element={<ProtectedLayout />}>
+                <Route element={<RootLayout />}>
+                <Route path="home" element={<UserDashboard />} />
+                <Route path="admin" element={<AdminDashboard />} />
+                <Route path="profile" element={<UpdateProfile />} />
+                <Route path="update-password" element={<UpdatePassword />} />
+            </Route>
+        </Route>
+        </>
+    )
+  );
+
+  function AppRoutes(){
+    return (
+        <>
+            <RouterProvider router={createRoute}/>
+        </>
+    )
+  }
+
+  export default AppRoutes;
+
+  
