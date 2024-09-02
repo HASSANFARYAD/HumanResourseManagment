@@ -23,7 +23,6 @@ import {
 const drawerWidthOpen = 280;
 const drawerWidthCollapsed = 60;
 
-
 const GetSideBar = ({ isOpen }) => {
   const location = useLocation();
   const { userAuth } = useSelector((state) => state.authentication);
@@ -45,8 +44,10 @@ const GetSideBar = ({ isOpen }) => {
 
   useEffect(() => {
     if (location.pathname === "/profile") {
-      setOpenMenu('Calendar');
-    }else {
+      setOpenMenu("Calendar");
+    } else if (location.pathname === "/add-user") {
+      setOpenMenu("Manage Users");
+    } else {
       setOpenMenu(null); // Close the opened menu for other paths
     }
   }, [location.pathname]);
@@ -57,47 +58,55 @@ const GetSideBar = ({ isOpen }) => {
       open={isOpen}
       sx={{
         flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          overflow: 'visible',
+        "& .MuiDrawer-paper": {
+          overflow: "visible",
           width: isOpen ? drawerWidthOpen : drawerWidthCollapsed,
-          boxSizing: 'border-box',
-          transition: 'width 0.3s easeisMobile',
-          position: 'fixed',
+          boxSizing: "border-box",
+          transition: "width 0.3s easeisMobile",
+          position: "fixed",
           top: isOpen ? 50 : 70,
-          
-            boxShadow: "4px 0px 6px rgba(0, 0, 0, 0.2)"
+
+          boxShadow: "4px 0px 6px rgba(0, 0, 0, 0.2)",
         },
       }}
     >
       <Box sx={{ width: isOpen ? drawerWidthOpen : drawerWidthCollapsed }}>
         <List>
-          <ListItem sx={{
-              overflow: 'hidden',
+          <ListItem
+            sx={{
+              overflow: "hidden",
             }}
           >
-            <NavLink to="/home" style={{ textDecoration: "none", color: "inherit" }}>
-              <ListItemIcon sx={{
-                my:2
-              }}>
-                
+            <NavLink
+              to="/home"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemIcon
+                sx={{
+                  my: 2,
+                }}
+              >
                 <img
-                  src= {userAuth.profile ?
-                    userAuth.profile :
-                    "https://wallpapersmug.com/download/1920x1080/abfc00/vector-design-retro-4k.jpg"
-                   }
+                  src={
+                    userAuth.profile
+                      ? userAuth.profile
+                      : "https://wallpapersmug.com/download/1920x1080/abfc00/vector-design-retro-4k.jpg"
+                  }
                   alt="logo"
                   style={{ width: "100%", height: "auto" }}
                 />
               </ListItemIcon>
               {isOpen && (
-                <ListItemText primary={<Typography variant="h6">My Fertility</Typography>} />
+                <ListItemText
+                  primary={<Typography variant="h6">My Fertility</Typography>}
+                />
               )}
             </NavLink>
           </ListItem>
           <Divider />
 
-          <NavLink 
-            to='/home' 
+          <NavLink
+            to="/home"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItem
@@ -105,12 +114,14 @@ const GetSideBar = ({ isOpen }) => {
               sx={{
                 position: "relative",
                 width: isOpen ? drawerWidthOpen : drawerWidthCollapsed,
-                backgroundColor: isSelected("/home") ? "rgba(25, 118, 210, 0.2)" : "inherit",  // Highlight selected
+                backgroundColor: isSelected("/home")
+                  ? "rgba(25, 118, 210, 0.2)"
+                  : "inherit", // Highlight selected
                 "&.hover": {
-                  overflow:'visible',
-                  backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                  overflow: "visible",
+                  backgroundColor: "rgba(0, 0, 0, 0.08)",
                 },
-                my:1
+                my: 1,
               }}
               onMouseEnter={() => handleMouseEnter("Dashboard")}
               onMouseLeave={() => handleMouseLeave()}
@@ -119,13 +130,14 @@ const GetSideBar = ({ isOpen }) => {
                 <DashboardIcon />
               </ListItemIcon>
               {isOpen || hoveredItem === "Dashboard" ? (
-                <ListItemText primary="Dashboard" sx={{margin:0}}/>
+                <ListItemText primary="Dashboard" sx={{ margin: 0 }} />
               ) : (
                 <Box
                   sx={{
                     position: "absolute",
                     left: drawerWidthCollapsed,
-                    visibility: hoveredItem === "Dashboard" ? "visible" : "hidden",
+                    visibility:
+                      hoveredItem === "Dashboard" ? "visible" : "hidden",
                     backgroundColor: "rgba(0, 0, 0, 0.7)",
                     borderRadius: 1,
                     padding: 1,
@@ -141,169 +153,188 @@ const GetSideBar = ({ isOpen }) => {
             </ListItem>
           </NavLink>
 
-          <NavLink 
-            to='preview-Link' 
+          <NavLink
+            to="preview-Link"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItem
-                  button
+              button
+              sx={{
+                position: "relative",
+                width: isOpen ? drawerWidthOpen : drawerWidthCollapsed,
+                backgroundColor: isSelected("/preview-Link")
+                  ? "rgba(25, 118, 210, 0.2)"
+                  : "inherit", // Highlight selected
+                "&.hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.08)",
+                },
+                my: 1,
+              }}
+              onMouseEnter={() => handleMouseEnter("PreviewLink")}
+              onMouseLeave={() => handleMouseLeave()}
+            >
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              {isOpen || hoveredItem === "PreviewLink" ? (
+                <ListItemText primary="PreviewLink" sx={{ margin: 0 }} />
+              ) : (
+                <Box
                   sx={{
-                    position: "relative",
-                    width: isOpen ? drawerWidthOpen : drawerWidthCollapsed,
-                    backgroundColor: isSelected("/preview-Link") ? "rgba(25, 118, 210, 0.2)" : "inherit",  // Highlight selected
-                    "&.hover": {
-                      backgroundColor: 'rgba(0, 0, 0, 0.08)',
-                    },
-                    my:1
+                    position: "absolute",
+                    left: drawerWidthCollapsed,
+                    visibility:
+                      hoveredItem === "PreviewLink" ? "visible" : "hidden",
+                    backgroundColor: "rgba(0, 0, 0, 0.7)",
+                    borderRadius: 1,
+                    padding: 1,
+                    boxShadow: 1,
+                    zIndex: 10,
+                    whiteSpace: "nowrap",
+                    width: drawerWidthCollapsed,
                   }}
-                  onMouseEnter={() => handleMouseEnter("PreviewLink")}
-                  onMouseLeave={() => handleMouseLeave()}
                 >
-                  <ListItemIcon>
-                    <DashboardIcon />
-                  </ListItemIcon>
-                  {isOpen || hoveredItem === "PreviewLink" ? (
-                    <ListItemText primary="PreviewLink" sx={{margin:0}}/>
-                  ) : (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        left: drawerWidthCollapsed,
-                        visibility: hoveredItem === "PreviewLink" ? "visible" : "hidden",
-                        backgroundColor: "rgba(0, 0, 0, 0.7)",
-                        borderRadius: 1,
-                        padding: 1,
-                        boxShadow: 1,
-                        zIndex: 10,
-                        whiteSpace: "nowrap",
-                        width: drawerWidthCollapsed,
-                      }}
-                    >
-                      <Typography variant="body2">Preview Link</Typography>
-                    </Box>
-                  )}
-                </ListItem>
+                  <Typography variant="body2">Preview Link</Typography>
+                </Box>
+              )}
+            </ListItem>
           </NavLink>
 
           <ListItem
-            sx={{ position: 'relative',
-              my:1
-             }}
-            onMouseEnter={() => handleMouseEnter('Calendar')}
+            sx={{ position: "relative", my: 1 }}
+            onMouseEnter={() => handleMouseEnter("Calendar")}
             onMouseLeave={() => handleMouseLeave()}
             button
-            onClick={() => handleClick('Calendar')}
+            onClick={() => handleClick("Calendar")}
           >
             <ListItemIcon>
               <CalendarTodayIcon />
             </ListItemIcon>
-            {isOpen || hoveredItem === 'Calendar' ? (
-              <ListItemText primary="Calendar" sx={{margin:0}} />
+            {isOpen || hoveredItem === "Calendar" ? (
+              <ListItemText primary="Calendar" sx={{ margin: 0 }} />
             ) : (
               <Box
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   left: drawerWidthCollapsed,
                   top: 0,
-                  visibility: hoveredItem === 'Calendar' ? 'visible' : 'hidden',
-                  backgroundColor: 'white',
+                  visibility: hoveredItem === "Calendar" ? "visible" : "hidden",
+                  backgroundColor: "white",
                   borderRadius: 1,
                   padding: 1,
                   boxShadow: 1,
                   zIndex: 10,
-                  width: 'auto',
-                  whiteSpace: 'nowrap',
+                  width: "auto",
+                  whiteSpace: "nowrap",
                 }}
               >
                 <Typography variant="body2">Calendar</Typography>
               </Box>
             )}
-            {isOpen && (openMenu === 'Calendar' ? <ExpandLess /> : <ExpandMore />)}
+            {isOpen &&
+              (openMenu === "Calendar" ? <ExpandLess /> : <ExpandMore />)}
           </ListItem>
-          <Collapse in={openMenu === 'Calendar'}>
+          <Collapse in={openMenu === "Calendar"}>
             <List component="div" disablePadding>
               <NavLink
-                to='/profile'
+                to="/profile"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <ListItem
                   button
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    position: 'relative',
-                    backgroundColor: isSelected("/profile") ? "rgba(25, 118, 210, 0.2)" : "inherit",  // Highlight selected
-                    '&:hover .nestedItemLabel': {
-                      visibility: 'visible',
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                    backgroundColor: isSelected("/profile")
+                      ? "rgba(25, 118, 210, 0.2)"
+                      : "inherit", // Highlight selected
+                    "&:hover .nestedItemLabel": {
+                      visibility: "visible",
                     },
                   }}
                 >
                   <ListItemIcon>
                     <AssessmentIcon />
                   </ListItemIcon>
-                  {isOpen || hoveredItem === 'TodayAppointments' ? (
+                  {isOpen || hoveredItem === "TodayAppointments" ? (
                     <ListItemText primary="Today's Appointments" />
                   ) : (
                     <Box
                       className="nestedItemLabel"
                       sx={{
-                        display: isOpen ? 'none' : 'block',
-                        position: 'absolute',
+                        display: isOpen ? "none" : "block",
+                        position: "absolute",
                         left: drawerWidthCollapsed + 20,
                         top: 0,
                         borderRadius: 1,
                         padding: 1,
                         zIndex: 10,
-                        width: 'auto',
-                        whiteSpace: 'nowrap',
-                        visibility: hoveredItem === 'TodayAppointments' ? 'visible' : 'hidden',
+                        width: "auto",
+                        whiteSpace: "nowrap",
+                        visibility:
+                          hoveredItem === "TodayAppointments"
+                            ? "visible"
+                            : "hidden",
                       }}
                     >
-                      <Typography variant="body2">Today's Appointments</Typography>
+                      <Typography variant="body2">
+                        Today's Appointments
+                      </Typography>
                     </Box>
                   )}
                 </ListItem>
               </NavLink>
-              
+
               <ListItem
                 button
-                onClick={() => handleSubMenuClick('UpcomingAppointments')}
+                onClick={() => handleSubMenuClick("UpcomingAppointments")}
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  position: 'relative',
-                  '&:hover .nestedItemLabel': {
-                    visibility: 'visible',
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  "&:hover .nestedItemLabel": {
+                    visibility: "visible",
                   },
                 }}
               >
                 <ListItemIcon>
                   <AssessmentIcon />
                 </ListItemIcon>
-                {isOpen || hoveredItem === 'UpcomingAppointments' ? (
+                {isOpen || hoveredItem === "UpcomingAppointments" ? (
                   <ListItemText primary="Upcoming Appointments" />
                 ) : (
                   <Box
                     className="nestedItemLabel"
                     sx={{
-                      display: isOpen ? 'none' : 'block',
-                      position: 'absolute',
+                      display: isOpen ? "none" : "block",
+                      position: "absolute",
                       left: drawerWidthCollapsed + 20,
                       top: 0,
                       borderRadius: 1,
                       padding: 1,
                       zIndex: 10,
-                      width: 'auto',
-                      whiteSpace: 'nowrap',
-                      visibility: hoveredItem === 'UpcomingAppointments' ? 'visible' : 'hidden',
+                      width: "auto",
+                      whiteSpace: "nowrap",
+                      visibility:
+                        hoveredItem === "UpcomingAppointments"
+                          ? "visible"
+                          : "hidden",
                     }}
                   >
-                    <Typography variant="body2">Upcoming Appointments</Typography>
+                    <Typography variant="body2">
+                      Upcoming Appointments
+                    </Typography>
                   </Box>
                 )}
-                {isOpen && (openSubMenu === 'UpcomingAppointments' ? <ExpandLess /> : <ExpandMore />)}
+                {isOpen &&
+                  (openSubMenu === "UpcomingAppointments" ? (
+                    <ExpandLess />
+                  ) : (
+                    <ExpandMore />
+                  ))}
               </ListItem>
-              <Collapse in={openSubMenu === 'UpcomingAppointments'}>
+              <Collapse in={openSubMenu === "UpcomingAppointments"}>
                 <List component="div" disablePadding>
                   <ListItem button sx={{ paddingLeft: 4 }}>
                     <ListItemText primary="Detail 1" />
@@ -316,6 +347,136 @@ const GetSideBar = ({ isOpen }) => {
             </List>
           </Collapse>
 
+          <ListItem
+            sx={{ position: "relative", my: 1 }}
+            onMouseEnter={() => handleMouseEnter("Manage Users")}
+            onMouseLeave={() => handleMouseLeave()}
+            button
+            onClick={() => handleClick("Manage Users")}
+          >
+            <ListItemIcon>
+              <CalendarTodayIcon />
+            </ListItemIcon>
+            {isOpen || hoveredItem === "Manage Users" ? (
+              <ListItemText primary="Manage Users" sx={{ margin: 0 }} />
+            ) : (
+              <Box
+                sx={{
+                  position: "absolute",
+                  left: drawerWidthCollapsed,
+                  top: 0,
+                  visibility:
+                    hoveredItem === "Manage Users" ? "visible" : "hidden",
+                  backgroundColor: "white",
+                  borderRadius: 1,
+                  padding: 1,
+                  boxShadow: 1,
+                  zIndex: 10,
+                  width: "auto",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <Typography variant="body2">Manage Users</Typography>
+              </Box>
+            )}
+            {isOpen &&
+              (openMenu === "Manage Users" ? <ExpandLess /> : <ExpandMore />)}
+          </ListItem>
+          <Collapse in={openMenu === "Manage Users"}>
+            <List component="div" disablePadding>
+              <NavLink
+                to="/add-user"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <ListItem
+                  button
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                    backgroundColor: isSelected("/add-user")
+                      ? "rgba(25, 118, 210, 0.2)"
+                      : "inherit", // Highlight selected
+                    "&:hover .nestedItemLabel": {
+                      visibility: "visible",
+                    },
+                  }}
+                >
+                  <ListItemIcon>
+                    <AssessmentIcon />
+                  </ListItemIcon>
+                  {isOpen || hoveredItem === "Add User" ? (
+                    <ListItemText primary="Add User" />
+                  ) : (
+                    <Box
+                      className="nestedItemLabel"
+                      sx={{
+                        display: isOpen ? "none" : "block",
+                        position: "absolute",
+                        left: drawerWidthCollapsed + 20,
+                        top: 0,
+                        borderRadius: 1,
+                        padding: 1,
+                        zIndex: 10,
+                        width: "auto",
+                        whiteSpace: "nowrap",
+                        visibility:
+                          hoveredItem === "Add User" ? "visible" : "hidden",
+                      }}
+                    >
+                      <Typography variant="body2">Add User</Typography>
+                    </Box>
+                  )}
+                </ListItem>
+              </NavLink>
+
+              <NavLink
+                to="/users-list"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <ListItem
+                  button
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                    backgroundColor: isSelected("/users-list")
+                      ? "rgba(25, 118, 210, 0.2)"
+                      : "inherit", // Highlight selected
+                    "&:hover .nestedItemLabel": {
+                      visibility: "visible",
+                    },
+                  }}
+                >
+                  <ListItemIcon>
+                    <AssessmentIcon />
+                  </ListItemIcon>
+                  {isOpen || hoveredItem === "Users List" ? (
+                    <ListItemText primary="Users List" />
+                  ) : (
+                    <Box
+                      className="nestedItemLabel"
+                      sx={{
+                        display: isOpen ? "none" : "block",
+                        position: "absolute",
+                        left: drawerWidthCollapsed + 20,
+                        top: 0,
+                        borderRadius: 1,
+                        padding: 1,
+                        zIndex: 10,
+                        width: "auto",
+                        whiteSpace: "nowrap",
+                        visibility:
+                          hoveredItem === "Users List" ? "visible" : "hidden",
+                      }}
+                    >
+                      <Typography variant="body2">Users List</Typography>
+                    </Box>
+                  )}
+                </ListItem>
+              </NavLink>
+            </List>
+          </Collapse>
         </List>
       </Box>
     </Drawer>

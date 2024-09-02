@@ -10,11 +10,13 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import authActions from "./Actions/authActions";
+import authActions from "./Reducers/reducers";
+import userActions from "./Actions/userActions";
 
 // Combine your reducers here
 const rootReducer = combineReducers({
   authentication: authActions,
+  user: userActions,
 });
 
 const persistConfig = {

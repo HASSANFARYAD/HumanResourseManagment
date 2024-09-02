@@ -5,7 +5,6 @@
 // import { handleApiRequest } from "../../utils/_handler/_handleApiRequest";
 // import { toast } from "react-toastify";
 
-
 //   // Post Login
 //   export const postLogin = createAsyncThunk(
 //     "auth/postLogin",
@@ -14,7 +13,7 @@
 //       try {
 //         const requestFn = () => axios.post(`${baseUrl}Auth/Login`, userData, config);
 //         const responseBack = await handleApiRequest(requestFn, dispatch);
-  
+
 //         if (responseBack) {
 //           localStorage.setItem("userInfo", JSON.stringify(responseBack));
 //           return responseBack;
@@ -24,7 +23,7 @@
 //       }
 //     }
 //   );
-  
+
 //   // Logout Action
 //   export const logoutAction = createAsyncThunk(
 //     "auth/logout",
@@ -159,10 +158,12 @@
 
 // //#endregion
 
-
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { handleApiError, processApiResponse } from "../../utils/_handler/_exceptions";
+import {
+  handleApiError,
+  processApiResponse,
+} from "../../utils/_handler/_exceptions";
 import { toast } from "react-toastify";
 import { baseUrl } from "../../utils/_envConfig";
 import { getAuthConfig } from "../../utils/_apiConfig";
@@ -194,7 +195,6 @@ export const postLogin = createAsyncThunk(
   }
 );
 
-
 export const logoutAction = createAsyncThunk(
   "/user/logout",
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -207,24 +207,23 @@ export const logoutAction = createAsyncThunk(
   }
 );
 
-//get user from local storage and place into store
-const userLoginFromStorage = localStorage.getItem("userInfo")
-  ? JSON.parse(localStorage.getItem("userInfo"))
-  : null;
 //#endregion
 
 //#region Profile
 export const getLoggedInUser = createAsyncThunk(
   "user/profile",
   async (id, { rejectWithValue, getState, dispatch }) => {
-
     try {
       const config = getAuthConfig(getState);
       const response = await axios.get(
         `${baseUrl}User/GetRecord?id=${id}`,
         config
       );
-      const responseBack = processApiResponse(response, dispatch, getState().authentication?.userAuth);
+      const responseBack = processApiResponse(
+        response,
+        dispatch,
+        getState().authentication?.userAuth
+      );
       return responseBack;
     } catch (error) {
       handleApiError(error, dispatch, getState().authentication?.userAuth);
@@ -278,7 +277,11 @@ export const updateProfile = createAsyncThunk(
         users,
         config
       );
-      const responseBack = processApiResponse(response, dispatch, getState().authentication?.userAuth);
+      const responseBack = processApiResponse(
+        response,
+        dispatch,
+        getState().authentication?.userAuth
+      );
       if (response?.data?.isSuccess) {
         localStorage.setItem("userInfo", JSON.stringify(responseBack));
         toast.success(response?.data?.message);
@@ -372,158 +375,3 @@ export const resetPassword = createAsyncThunk(
 );
 
 //#endregion
-
-const authSlices = createSlice({
-  name: "authentication",
-  initialState: {
-    userAuth: userLoginFromStorage,
-    loading: false,
-    appErr: null,
-    appStatus: null,
-    appStatusCode: null,
-    serverErr: null,
-  },
-  reducers: {
-    updateReduxUserAuth: (state, payload) => {
-      state.userAuth = payload.payload;
-    },
-    setReduxUserAuthValuesUndefined: (state) => {
-      state.userAuth = {}; // Setting userAuth to an empty object
-    },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(postLogin.pending, (state, action) => {
-      state.appErr = undefined;
-      state.loading = true;
-      state.serverErr = undefined;
-      state.appStatus = action.payload?.status || null;
-      state.appStatusCode = action.payload?.statusCode || null;
-    });
-    builder.addCase(postLogin.fulfilled, (state, action) => {
-      state.userAuth = action?.payload;
-      state.appErr = undefined;
-      state.loading = false;
-      state.serverErr = undefined;
-      state.appStatus = action.payload?.status || null;
-      state.appStatusCode = action.payload?.statusCode || null;
-    });
-    builder.addCase(postLogin.rejected, (state, action) => {
-      state.appErr = action.payload?.message || null;
-      state.serverErr =
-        action.error?.message || "An error occurred on the server.";
-      state.appStatus = action.payload?.status || null;
-      state.appStatusCode = action.payload?.statusCode || null;
-      state.loading = false;
-    });
-
-    //Logout
-    builder.addCase(logoutAction.pending, (state, action) => {
-      state.loading = false;
-    });
-    builder.addCase(logoutAction.fulfilled, (state, action) => {
-      state.userAuth = undefined;
-      state.loading = false;
-      state.appErr = undefined;
-      state.serverErr = undefined;
-    });
-    builder.addCase(logoutAction.rejected, (state, action) => {
-      state.appErr = action?.payload?.message;
-      state.serverErr = action?.error?.message;
-      state.loading = false;
-    });
-
-    builder.addCase(updateProfileImage.pending, (state, action) => {
-      state.profileLoading = true;
-      state.profileAppErr = undefined;
-      state.profileServerErr = undefined;
-      state.appStatus = action?.payload?.status;
-      state.appStatusCode = action?.payload?.statusCode;
-    });
-    builder.addCase(updateProfileImage.fulfilled, (state, action) => {
-      state.userAuth = action?.payload ? action.payload : state.userAuth; //action?.payload;
-      state.profileLoading = false;
-      state.profileAppErr = action?.payload?.message;
-      state.profileServerErr = action?.error?.message;
-      state.appStatus = action?.payload?.status;
-      state.appStatusCode = action?.payload?.statusCode;
-    });
-    builder.addCase(updateProfileImage.rejected, (state, action) => {
-      state.profileAppErr = action?.payload?.message;
-      state.profileServerErr = action?.error?.message;
-      state.profileLoading = false;
-      state.appStatus = action?.payload?.status;
-      state.appStatusCode = action?.payload?.statusCode;
-    });
-
-    builder.addCase(updateProfile.pending, (state, action) => {
-      state.profileLoading = true;
-      state.profileAppErr = undefined;
-      state.profileServerErr = undefined;
-      state.appStatus = action?.payload?.status;
-      state.appStatusCode = action?.payload?.statusCode;
-    });
-    builder.addCase(updateProfile.fulfilled, (state, action) => {
-      state.userAuth = action?.payload ? action.payload : state.userAuth;
-      state.profileLoading = false;
-      state.profileAppErr = action?.payload?.message;
-      state.profileServerErr = action?.error?.message;
-      state.appStatus = action?.payload?.status;
-      state.appStatusCode = action?.payload?.statusCode;
-    });
-    builder.addCase(updateProfile.rejected, (state, action) => {
-      state.profileAppErr = action?.payload?.message;
-      state.profileServerErr = action?.error?.message;
-      state.profileLoading = false;
-      state.appStatus = action?.payload?.status;
-      state.appStatusCode = action?.payload?.statusCode;
-    });
-
-
-    builder.addCase(updatePassword.pending, (state, action) => {
-      state.loading = true;
-      state.profileAppErr = undefined;
-      state.profileAppErr = undefined;
-      state.profileServerErr = undefined;
-      state.appStatusCode = undefined;
-    });
-    builder.addCase(updatePassword.fulfilled, (state, action) => {
-      state.loading = false;
-      state.profileAppErr = undefined;
-      state.profileServerErr = undefined;
-      state.appStatus = false;
-      state.appStatusCode = undefined;
-    });
-    builder.addCase(updatePassword.rejected, (state, action) => {
-      state.appErr = action?.payload?.message;
-      state.loading = false;
-      state.serverErr = undefined;
-      state.appStatus = action?.payload?.status;
-      state.appStatusCode = action?.payload?.statusCode;
-    });
-
-    builder.addCase(resetPassword.pending, (state, action) => {
-      state.loading = true;
-      state.appStatusCode = undefined;
-      state.profileAppErr = undefined;
-      state.profileAppErr = undefined;
-      state.profileServerErr = undefined;
-    });
-    builder.addCase(resetPassword.fulfilled, (state, action) => {
-      state.loading = false;
-      state.appStatus = false;
-      state.appStatusCode = undefined;
-      state.profileAppErr = undefined;
-      state.profileServerErr = undefined;
-    });
-    builder.addCase(resetPassword.rejected, (state, action) => {
-      state.appErr = action?.payload?.message;
-      state.loading = false;
-      state.serverErr = undefined;
-      state.appStatus = action?.payload?.status;
-      state.appStatusCode = action?.payload?.statusCode;
-    });
-  },
-});
-export const { updateReduxUserAuth, setReduxUserAuthValuesUndefined } =
-  authSlices.actions;
-export default authSlices.reducer;
