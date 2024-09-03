@@ -9,6 +9,7 @@ const PasswordField = ({
   onChange,
   onBlur,
   value,
+  required,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,7 +24,7 @@ const PasswordField = ({
       type={showPassword ? "text" : "password"}
       placeholder={placeholder}
       fullWidth
-      required
+      require={required && required}
       size="small"
       onChange={onChange}
       onBlur={onBlur}

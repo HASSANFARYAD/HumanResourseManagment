@@ -24,18 +24,23 @@ export const handleApiError = (error, dispatch, tokenExpiryTime) => {
 // Unauthorized Error Handler
 const handleUnauthorizedError = (error, tokenExpiryTime) => {
   const currentTimeInSeconds = Date.now() / 1000;
-  const tokenExpiryInSeconds = new Date(parseInt(tokenExpiryTime)).getTime() / 1000;
+  const tokenExpiryInSeconds =
+    new Date(parseInt(tokenExpiryTime)).getTime() / 1000;
 
   if (tokenExpiryInSeconds && tokenExpiryInSeconds < currentTimeInSeconds) {
     toast.error("Session has expired. Please log in again.");
   } else {
-    toast.error("Unauthorized access. You don't have the required permissions.");
+    toast.error(
+      "Unauthorized access. You don't have the required permissions."
+    );
   }
 };
 
 // Utility function to log and display errors
 const logAndToastError = (statusCode, errorMessage) => {
-  console.error(`Server returned error with status ${statusCode}: ${errorMessage}`);
+  console.error(
+    `Server returned error with status ${statusCode}: ${errorMessage}`
+  );
   toast.error(errorMessage);
 };
 
@@ -44,6 +49,9 @@ export const processApiResponse = (response, dispatch, tokenExpiryTime) => {
   if (!response?.data?.isSuccess) {
     handleApiError(response?.data, dispatch, tokenExpiryTime);
   } else {
-    return response?.data?.data || response?.data;
+    return {
+      data: response?.data?.data,
+      message: response?.data?.message,
+    };
   }
 };

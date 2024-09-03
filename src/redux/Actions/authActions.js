@@ -184,11 +184,11 @@ export const postLogin = createAsyncThunk(
         config
       );
       const responseBack = processApiResponse(response, dispatch);
-      if (!responseBack && responseBack === undefined) {
-        return responseBack;
+      if (!responseBack?.data && responseBack?.data === undefined) {
+        toast.error(responseBack?.message);
       }
       localStorage.setItem("userInfo", JSON.stringify(responseBack));
-      return responseBack;
+      return responseBack?.data;
     } catch (error) {
       handleApiError(error, dispatch);
     }
@@ -224,7 +224,7 @@ export const getLoggedInUser = createAsyncThunk(
         dispatch,
         getState().authentication?.userAuth
       );
-      return responseBack;
+      return responseBack?.data;
     } catch (error) {
       handleApiError(error, dispatch, getState().authentication?.userAuth);
     }
@@ -256,11 +256,11 @@ export const updateProfileImage = createAsyncThunk(
         config
       );
       const responseBack = processApiResponse(response, dispatch, user);
-      if (responseBack) {
-        localStorage.setItem("userInfo", JSON.stringify(responseBack));
-        toast.success(response?.data?.message);
+      if (responseBack?.data) {
+        localStorage.setItem("userInfo", JSON.stringify(responseBack.data));
+        toast.success(responseBack?.message);
       }
-      return responseBack;
+      return responseBack?.data;
     } catch (error) {
       handleApiError(error, dispatch, user);
     }
@@ -282,11 +282,11 @@ export const updateProfile = createAsyncThunk(
         dispatch,
         getState().authentication?.userAuth
       );
-      if (response?.data?.isSuccess) {
-        localStorage.setItem("userInfo", JSON.stringify(responseBack));
-        toast.success(response?.data?.message);
+      if (responseBack?.data) {
+        localStorage.setItem("userInfo", JSON.stringify(responseBack?.data));
+        toast.success(responseBack?.message);
       }
-      return responseBack;
+      return responseBack?.data;
     } catch (error) {
       handleApiError(error, dispatch, getState().authentication?.userAuth);
       rejectWithValue(error);
@@ -315,8 +315,8 @@ export const updatePassword = createAsyncThunk(
       );
 
       const responseBack = processApiResponse(response, dispatch, user);
-      if (responseBack) {
-        toast.success(response?.data?.message);
+      if (responseBack?.message) {
+        toast.success(responseBack?.message);
       }
     } catch (error) {
       handleApiError(error, dispatch, users);
@@ -340,8 +340,8 @@ export const forgotPassword = createAsyncThunk(
         config
       );
       const responseBack = processApiResponse(response, dispatch);
-      if (responseBack) {
-        toast.success(response?.data?.message);
+      if (responseBack?.message) {
+        toast.success(responseBack?.message);
       }
     } catch (error) {
       handleApiError(error, dispatch);
@@ -365,8 +365,8 @@ export const resetPassword = createAsyncThunk(
         config
       );
       const responseBack = processApiResponse(response, dispatch);
-      if (responseBack) {
-        toast.success(response?.data?.message);
+      if (responseBack?.message) {
+        toast.success(responseBack?.message);
       }
     } catch (error) {
       handleApiError(error, dispatch);

@@ -12,11 +12,13 @@ import {
 import storage from "redux-persist/lib/storage";
 import authActions from "./Reducers/reducers";
 import userActions from "./Actions/userActions";
+import apiActions from "./Reducers/apiReducers";
 
 // Combine your reducers here
 const rootReducer = combineReducers({
   authentication: authActions,
   user: userActions,
+  api: apiActions,
 });
 
 const persistConfig = {

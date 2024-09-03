@@ -23,10 +23,8 @@ export const addNewUser = createAsyncThunk(
         dispatch,
         getState().authentication?.userAuth
       );
-      if (response?.data?.isSuccess) {
-        toast.success(response?.data?.message);
-      }
-      return responseBack;
+      toast.success(responseBack?.message);
+      return responseBack?.data;
     } catch (error) {
       handleApiError(error, dispatch, getState().authentication?.userAuth);
       rejectWithValue(error);
@@ -53,7 +51,7 @@ export const getUserRecords = createAsyncThunk(
         dispatch,
         getState().authentication?.userAuth
       );
-      return responseBack;
+      return responseBack?.data;
     } catch (error) {
       handleApiError(error, dispatch, getState().authentication?.userAuth);
       rejectWithValue(error);

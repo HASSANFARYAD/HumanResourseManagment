@@ -48,49 +48,50 @@ const AddUser = () => {
 
   const validateUpdateProfile = Yup.object().shape({
     firstName: Yup.string()
-      .min(3, "First Name must be at least 3 characters")
-      .required("First Name is required"),
+      .min(4, "First Name must be at least 4 characters long.")
+      .required("First Name is a required field."),
     lastName: Yup.string()
-      .min(3, "Last Name must be at least 3 characters")
-      .required("Last Name is required"),
-    email: Yup.string().required("Email is required"),
+      .min(4, "Last Name must be at least 4 characters long.")
+      .required("Last Name is a required field."),
+    userName: Yup.string()
+      .min(4, "Username must be at least 4 characters long and unique.")
+      .required("Username is a required field."),
+    email: Yup.string()
+      .email("Please enter a valid email address.")
+      .required("Email is a required field."),
     contactNumber: Yup.string()
-      .min(8, "Phone Number must be at least 8 characters")
-      .required("Phone Number is required"),
+      .min(11, "Phone Number must be at least 11 digits long.")
+      .required("Phone Number is a required field."),
     DOB: Yup.date()
-      .required("Please select your date of birth")
+      .required("Date of Birth is a required field.")
       .max(
         new Date(new Date().setFullYear(new Date().getFullYear() - 18)),
-        "You must be 18 years or older"
+        "You must be at least 18 years old."
       ),
-    gender: Yup.string().required("Gender is required"),
-    password: Yup.string().required("Password is required"),
-    confirmPassword: Yup.string().required("Confirm Password is required"),
+    password: Yup.string().required("Password is a required field."),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match.")
+      .required("Confirm Password is a required field."),
   });
 
-  const {
-    values,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-    errors,
-  } = useFormik({
-    initialValues: initialValues,
-    validationSchema: validateUpdateProfile,
-    onSubmit: async (values) => {
-      try {
-        const response = await dispatch(addNewUser(values));
-        console.log("sibmit");
-      } catch (error) {
-      } finally {
-      }
-    },
-  });
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: validateUpdateProfile,
+      validateOnChange: false,
+      validateOnBlur: true,
+      onSubmit: async (values) => {
+        try {
+          await dispatch(addNewUser(values));
+        } catch (error) {
+        } finally {
+        }
+      },
+    });
 
   const isPasswordMatch = values.password === values.confirmPassword;
   const updateButtonDisabled = !isPasswordMatch;
-
+  console.log("errors:: ", errors);
   return (
     <>
       <BreadCrumb pageName="Profile" />
@@ -109,8 +110,8 @@ const AddUser = () => {
                       value={values.firstName}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.firstName)}
-                      helperText={errors.firstName}
+                      error={touched.firstName && errors.firstName}
+                      helperText={touched.firstName && errors.firstName}
                     />
                   </Grid>
 
@@ -122,8 +123,8 @@ const AddUser = () => {
                       value={values.lastName}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.lastName)}
-                      helperText={errors.lastName}
+                      error={touched.lastName && Boolean(errors.lastName)}
+                      helperText={touched.lastName && errors.lastName}
                     />
                   </Grid>
 
@@ -135,8 +136,8 @@ const AddUser = () => {
                       value={values.userName}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.userName)}
-                      helperText={errors.userName}
+                      error={touched.userName && Boolean(errors.userName)}
+                      helperText={touched.userName && errors.userName}
                     />
                   </Grid>
 
@@ -148,8 +149,8 @@ const AddUser = () => {
                       value={values.email}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.email)}
-                      helperText={errors.email}
+                      error={touched.email && Boolean(errors.email)}
+                      helperText={touched.email && errors.email}
                     />
                   </Grid>
 
@@ -162,7 +163,7 @@ const AddUser = () => {
                       onBlur={handleBlur}
                       value={values.password}
                     />
-                    {errors.password && (
+                    {touched.password && errors.password && (
                       <Typography color="error" variant="body2" align="right">
                         {errors.password}
                       </Typography>
@@ -193,7 +194,7 @@ const AddUser = () => {
                       onBlur={handleBlur}
                       value={values.confirmPassword}
                     />
-                    {errors.confirmPassword && (
+                    {touched.confirmPassword && errors.confirmPassword && (
                       <Typography color="error" variant="body2" align="right">
                         {errors.confirmPassword}
                       </Typography>
@@ -214,8 +215,10 @@ const AddUser = () => {
                       value={values.contactNumber}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.contactNumber)}
-                      helperText={errors.contactNumber}
+                      error={
+                        touched.contactNumber && Boolean(errors.contactNumber)
+                      }
+                      helperText={touched.contactNumber && errors.contactNumber}
                     />
                   </Grid>
 
@@ -227,8 +230,8 @@ const AddUser = () => {
                       value={values.DOB}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.DOB)}
-                      helperText={errors.DOB}
+                      error={touched.DOB && Boolean(errors.DOB)}
+                      helperText={touched.DOB && errors.DOB}
                     />
                   </Grid>
 
@@ -240,8 +243,8 @@ const AddUser = () => {
                       value={values.address}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.address)}
-                      helperText={errors.address}
+                      error={touched.address && Boolean(errors.address)}
+                      helperText={touched.address && errors.address}
                     />
                   </Grid>
 
@@ -253,8 +256,8 @@ const AddUser = () => {
                       value={values.latitude}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.latitude)}
-                      helperText={errors.latitude}
+                      error={touched.latitude && Boolean(errors.latitude)}
+                      helperText={touched.latitude && errors.latitude}
                     />
                   </Grid>
 
@@ -266,8 +269,8 @@ const AddUser = () => {
                       value={values.longitude}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={Boolean(errors.longitude)}
-                      helperText={errors.longitude}
+                      error={touched.longitude && Boolean(errors.longitude)}
+                      helperText={touched.longitude && errors.longitude}
                     />
                   </Grid>
 

@@ -45,7 +45,10 @@ const GetSideBar = ({ isOpen }) => {
   useEffect(() => {
     if (location.pathname === "/profile") {
       setOpenMenu("Calendar");
-    } else if (location.pathname === "/add-user") {
+    } else if (
+      location.pathname === "/add-user" ||
+      location.pathname === "/users-list"
+    ) {
       setOpenMenu("Manage Users");
     } else {
       setOpenMenu(null); // Close the opened menu for other paths

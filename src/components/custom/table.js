@@ -14,10 +14,12 @@ import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutl
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import CircularProgress from "@mui/material/CircularProgress";
+import CustomButtons from "./buttons";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#304FFE",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -40,8 +42,10 @@ function CustomTable({
   records,
   totalRecords,
   pageLength,
+  buttons,
   onPageChange,
   onPageLengthChange,
+  loader,
 }) {
   const [rowsPerPage, setRowsPerPage] = useState(pageLength);
   const [page, setPage] = useState(0);
@@ -51,10 +55,9 @@ function CustomTable({
 
   const handleSort = (headerId) => {
     const isAsc = sortColumn === headerId && sortDirection === "asc";
-    const newSortDirection = isAsc ? "desc" : "asc"; // Toggle direction
+    const newSortDirection = isAsc ? "desc" : "asc";
     setSortColumn(headerId);
     setSortDirection(newSortDirection);
-    // Call parent function to sort records based on the column and direction
     onPageChange(page, rowsPerPage, headerId, newSortDirection, search);
   };
 
@@ -238,7 +241,7 @@ function CustomTable({
               {headers.map((header) => (
                 <StyledTableCell
                   key={header.id}
-                  onClick={() => handleSort(header.id)} // Call sorting when clicked
+                  onClick={() => header.id !== "0" && handleSort(header.id)} // Call sorting when clicked
                   sx={{
                     cursor: "pointer",
                     fontWeight: "600",
@@ -246,12 +249,18 @@ function CustomTable({
                   align="center"
                 >
                   {header.label}
-                  {sortColumn === header.id ? (
-                    sortDirection === "asc" ? (
-                      <KeyboardArrowUpIcon fontSize="small" />
-                    ) : (
-                      <KeyboardArrowDownIcon fontSize="small" />
-                    )
+                  {header.id !== "0" ? (
+                    <>
+                      {sortColumn === header.id ? (
+                        sortDirection === "asc" ? (
+                          <KeyboardArrowUpIcon fontSize="small" />
+                        ) : (
+                          <KeyboardArrowDownIcon fontSize="small" />
+                        )
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   ) : (
                     <></>
                   )}
@@ -260,26 +269,43 @@ function CustomTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentRecords.length >= 1 ? (
-              currentRecords.map((row) => (
-                <StyledTableRow key={row.id}>
-                  {headers.map((header) => (
-                    <StyledTableCell key={header.id} align="center">
-                      {header.id === "profilePath" ? (
-                        <a
-                          href={row[header.id]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View Profile
-                        </a>
-                      ) : (
-                        row[header.id]
-                      )}
+            {!loader ? (
+              <>
+                {currentRecords.length >= 1 ? (
+                  currentRecords.map((row) => (
+                    <StyledTableRow key={row.id}>
+                      {headers.map((header) => (
+                        <StyledTableCell key={header.id} align="center">
+                          {header.id === "0" ? (
+                            <CustomButtons buttons={buttons} row={row} />
+                          ) : header.id === "profilePath" ? (
+                            <a
+                              href={row[header.id]}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              View Profile
+                            </a>
+                          ) : (
+                            row[header.id]
+                          )}
+                        </StyledTableCell>
+                      ))}
+                    </StyledTableRow>
+                  ))
+                ) : (
+                  <StyledTableRow>
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      colSpan={headers.length}
+                      align="center"
+                    >
+                      No Record Found
                     </StyledTableCell>
-                  ))}
-                </StyledTableRow>
-              ))
+                  </StyledTableRow>
+                )}
+              </>
             ) : (
               <StyledTableRow>
                 <StyledTableCell
@@ -288,7 +314,7 @@ function CustomTable({
                   colSpan={headers.length}
                   align="center"
                 >
-                  No Record Found
+                  <CircularProgress />
                 </StyledTableCell>
               </StyledTableRow>
             )}
