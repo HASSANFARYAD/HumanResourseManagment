@@ -7,9 +7,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import DraggableDialog from "../../components/custom/dialoge";
 import { Box } from "@mui/material";
 import { deleteRecord } from "../../redux/Actions/apiActions";
+import { Navigate, useNavigate } from "react-router";
 
 const UsersList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [records, setRecords] = useState([]);
   const [pageLength, setPageLength] = useState(5);
   const [loader, setLoader] = useState(false);
@@ -17,6 +20,7 @@ const UsersList = () => {
   const [deleteLoader, setDeleteLoader] = useState(false);
   const [open, setOpen] = useState(false);
   const [isDelete, setIsDelete] = useState();
+  const [updateRecord, setUpdateRecord] = useState(null);
 
   const buttons = [
     {
@@ -53,7 +57,10 @@ const UsersList = () => {
     handleClose();
   };
 
-  const onUpdate = () => {};
+  const onUpdate = (row) => {
+    setUpdateRecord(row);
+    navigate("/add-user", { state: row });
+  };
 
   const handleOpen = (id) => {
     setIsDelete(id);

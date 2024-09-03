@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,25 +25,36 @@ import BreadCrumb from "../../components/custom/breadCrumb";
 import PasswordChecklist from "react-password-checklist";
 import PasswordField from "../../components/custom/password-field";
 import { addNewUser } from "../../redux/Actions/userActions";
+import { useLocation } from "react-router";
 
 const AddUser = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const [isUpdatedCall, setIsUpdate] = useState(false);
+  const recordForUpdate = location.state;
+  console.log(recordForUpdate);
+
+  useEffect(() => {
+    if (recordForUpdate) {
+      setIsUpdate(true);
+    }
+  }, [recordForUpdate]);
 
   const initialValues = {
-    id: "",
-    firstName: "",
-    lastName: "",
-    userName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    DOB: "",
-    contactNumber: "",
-    address: "",
-    gender: "",
-    latitude: "",
-    longitude: "",
-    profile: "",
+    id: recordForUpdate?.id || "",
+    firstName: recordForUpdate?.firstName || "",
+    lastName: recordForUpdate?.lastName || "",
+    userName: recordForUpdate?.userName || "",
+    email: recordForUpdate?.email || "",
+    password: recordForUpdate?.password || "",
+    confirmPassword: recordForUpdate?.confirmPassword || "",
+    DOB: recordForUpdate?.dob || "",
+    contactNumber: recordForUpdate?.contactNumber || "",
+    address: recordForUpdate?.address || "",
+    gender: recordForUpdate?.gender || "",
+    latitude: recordForUpdate?.latitude || "",
+    longitude: recordForUpdate?.longitude || "",
+    profile: recordForUpdate?.profile || "",
   };
 
   const validateUpdateProfile = Yup.object().shape({
@@ -68,10 +79,21 @@ const AddUser = () => {
         new Date(new Date().setFullYear(new Date().getFullYear() - 18)),
         "You must be at least 18 years old."
       ),
-    password: Yup.string().required("Password is a required field."),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match.")
-      .required("Confirm Password is a required field."),
+    password: Yup.string().when(["isUpdateCall"], (isUpdateCall, schema) => {
+      return isUpdateCall[0]
+        ? schema.optional()
+        : schema.min(8).required("Please enter password");
+    }),
+    confirmPassword: Yup.string().when(
+      ["isUpdateCall"],
+      (isUpdateCall, schema) => {
+        return isUpdateCall[0]
+          ? schema.optional()
+          : schema
+              .oneOf([Yup.ref("password")], "Password not matched")
+              .required("Please enter password");
+      }
+    ),
   });
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -91,7 +113,7 @@ const AddUser = () => {
 
   const isPasswordMatch = values.password === values.confirmPassword;
   const updateButtonDisabled = !isPasswordMatch;
-  console.log("errors:: ", errors);
+
   return (
     <>
       <BreadCrumb pageName="Profile" />
@@ -154,59 +176,74 @@ const AddUser = () => {
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={6}>
-                    <PasswordField
-                      label="New Password"
-                      name="password"
-                      placeholder="Enter new password"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.password}
-                    />
-                    {touched.password && errors.password && (
-                      <Typography color="error" variant="body2" align="right">
-                        {errors.password}
-                      </Typography>
-                    )}
-                    <label className="font-weight-bold">
-                      Password Must Contain
-                    </label>
-                    <PasswordChecklist
-                      rules={[
-                        "minLength",
-                        "lowercase",
-                        "capital",
-                        "number",
-                        "specialChar",
-                      ]}
-                      minLength={8}
-                      value={values.password}
-                      onChange={(isValid) => {}}
-                    />
-                  </Grid>
+                  {!isUpdatedCall && (
+                    <>
+                      <Grid item xs={12} sm={6}>
+                        <PasswordField
+                          label="New Password"
+                          name="password"
+                          placeholder="Enter new password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password}
+                        />
+                        {touched.password && errors.password && (
+                          <Typography
+                            color="error"
+                            variant="body2"
+                            align="right"
+                          >
+                            {errors.password}
+                          </Typography>
+                        )}
+                        <label className="font-weight-bold">
+                          Password Must Contain
+                        </label>
+                        <PasswordChecklist
+                          rules={[
+                            "minLength",
+                            "lowercase",
+                            "capital",
+                            "number",
+                            "specialChar",
+                          ]}
+                          minLength={8}
+                          value={values.password}
+                          onChange={(isValid) => {}}
+                        />
+                      </Grid>
 
-                  <Grid item xs={12} sm={6}>
-                    <PasswordField
-                      label="Confirm Password"
-                      name="confirmPassword"
-                      placeholder="Confirm your new password"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.confirmPassword}
-                    />
-                    {touched.confirmPassword && errors.confirmPassword && (
-                      <Typography color="error" variant="body2" align="right">
-                        {errors.confirmPassword}
-                      </Typography>
-                    )}
+                      <Grid item xs={12} sm={6}>
+                        <PasswordField
+                          label="Confirm Password"
+                          name="confirmPassword"
+                          placeholder="Confirm your new password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.confirmPassword}
+                        />
+                        {touched.confirmPassword && errors.confirmPassword && (
+                          <Typography
+                            color="error"
+                            variant="body2"
+                            align="right"
+                          >
+                            {errors.confirmPassword}
+                          </Typography>
+                        )}
 
-                    {!isPasswordMatch && (
-                      <Typography color="error" variant="body2" align="right">
-                        Password & Confirm Password do not match!
-                      </Typography>
-                    )}
-                  </Grid>
-
+                        {!isPasswordMatch && (
+                          <Typography
+                            color="error"
+                            variant="body2"
+                            align="right"
+                          >
+                            Password & Confirm Password do not match!
+                          </Typography>
+                        )}
+                      </Grid>
+                    </>
+                  )}
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
@@ -227,11 +264,15 @@ const AddUser = () => {
                       fullWidth
                       label="Date of Birth"
                       name="DOB"
+                      type="date"
                       value={values.DOB}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={touched.DOB && Boolean(errors.DOB)}
                       helperText={touched.DOB && errors.DOB}
+                      InputLabelProps={{
+                        shrink: true, // To ensure the label is always shown when type is date
+                      }}
                     />
                   </Grid>
 
