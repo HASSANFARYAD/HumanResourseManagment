@@ -1,9 +1,15 @@
-export function calculateMaxDate() {
+// Calculates the maximum date age years ago from today
+export function calculateMaxDate(age) {
   const today = new Date();
-  return new Date(today.getFullYear() - 13, today.getMonth(), today.getDate());
+  return new Date(
+    today.getFullYear() - parseInt(18),
+    today.getMonth(),
+    today.getDate()
+  );
 }
 
-export function disabledPreviousDates() {
+// Disables selection of previous dates in datetime input (up to the current moment)
+export function disabledPreviousDateTime() {
   const today = new Date();
   const formattedDate = new Date(
     today.getTime() - today.getTimezoneOffset() * 60000
@@ -13,35 +19,35 @@ export function disabledPreviousDates() {
   return formattedDate;
 }
 
-export function disabledPreviousOnlyDates() {
+// Disables selection of previous dates in date input (up to the current moment)
+export function disabledPreviousDate() {
   const today = new Date();
   const formattedDate = new Date(
     today.getTime() - today.getTimezoneOffset() * 60000
-  );
+  )
+    .toISOString()
+    .split("T")[0];
 
   return formattedDate;
 }
 
+// Extracts the date part (YYYY-MM-DD) from a datetime string
 export function getDateFromString(dateTimeString) {
   const dateOnly = dateTimeString.substring(0, 10);
   return dateOnly;
 }
 
+// Calculates the difference in days between the target date and today
 export function calculateDaysDifference(targetDate) {
-  const targetDateTime = new Date(targetDate);
   const today = new Date();
-  const differenceMilliseconds = targetDateTime - today;
-  const differenceDays = Math.floor(
-    differenceMilliseconds / (1000 * 60 * 60 * 24)
-  );
-
-  return differenceDays;
+  const target = new Date(targetDate);
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const difference = Math.floor((target - today) / msPerDay);
+  return difference;
 }
 
+// Truncates text to a specified word limit and appends "..." if truncated
 export const truncateText = (text, limit) => {
-  const words = text.split(" ");
-  if (words.length > limit) {
-    return words.slice(0, limit).join(" ") + "...";
-  }
-  return text;
+  const words = text.trim().split(/\s+/); // Trim and split by any whitespace
+  return words.length > limit ? words.slice(0, limit).join(" ") + "..." : text;
 };

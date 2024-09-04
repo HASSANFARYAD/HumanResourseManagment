@@ -1,42 +1,39 @@
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  Avatar,
   Box,
   Button,
-  CircularProgress,
   Container,
   Grid,
-  IconButton,
-  Input,
   Radio,
   RadioGroup,
   TextField,
   FormControlLabel,
   FormLabel,
   CardContent,
-  Stack,
   Typography,
 } from "@mui/material";
 import CustomCard from "../../theme-styles/customCard";
 import BreadCrumb from "../../components/custom/breadCrumb";
 import PasswordChecklist from "react-password-checklist";
 import PasswordField from "../../components/custom/password-field";
-import { addNewUser } from "../../redux/Actions/userActions";
+import { addUpdateUser } from "../../redux/Actions/userActions";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation } from "react-router";
+import { calculateMaxDate } from "../../utils/_helpers";
 
 const AddUser = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const [isUpdatedCall, setIsUpdate] = useState(false);
+  const [isUpdatedCall, setIsUpdateCall] = useState(false);
+  const [loader, setLoader] = useState(false);
   const recordForUpdate = location.state;
-  console.log(recordForUpdate);
 
   useEffect(() => {
     if (recordForUpdate) {
-      setIsUpdate(true);
+      setIsUpdateCall(true);
     }
   }, [recordForUpdate]);
 
@@ -55,9 +52,11 @@ const AddUser = () => {
     latitude: recordForUpdate?.latitude || "",
     longitude: recordForUpdate?.longitude || "",
     profile: recordForUpdate?.profile || "",
+    isUpdated: isUpdatedCall,
   };
 
-  const validateUpdateProfile = Yup.object().shape({
+  const validateProfile = Yup.object().shape({
+    isUpdated: Yup.bool(),
     firstName: Yup.string()
       .min(4, "First Name must be at least 4 characters long.")
       .required("First Name is a required field."),
@@ -79,40 +78,39 @@ const AddUser = () => {
         new Date(new Date().setFullYear(new Date().getFullYear() - 18)),
         "You must be at least 18 years old."
       ),
-    password: Yup.string().when(["isUpdateCall"], (isUpdateCall, schema) => {
-      return isUpdateCall[0]
+    password: Yup.string().when(["isUpdated"], (isUpdated, schema) => {
+      return isUpdatedCall
         ? schema.optional()
         : schema.min(8).required("Please enter password");
     }),
-    confirmPassword: Yup.string().when(
-      ["isUpdateCall"],
-      (isUpdateCall, schema) => {
-        return isUpdateCall[0]
-          ? schema.optional()
-          : schema
-              .oneOf([Yup.ref("password")], "Password not matched")
-              .required("Please enter password");
-      }
-    ),
+    confirmPassword: Yup.string().when(["isUpdated"], (isUpdated, schema) => {
+      return isUpdatedCall
+        ? schema.optional()
+        : schema
+            .oneOf([Yup.ref("password")], "Password not matched")
+            .required("Please enter password");
+    }),
   });
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
-      validationSchema: validateUpdateProfile,
+      validationSchema: validateProfile,
       validateOnChange: false,
       validateOnBlur: true,
       onSubmit: async (values) => {
         try {
-          await dispatch(addNewUser(values));
+          setLoader(true);
+          await dispatch(addUpdateUser(values));
         } catch (error) {
         } finally {
+          setLoader(false);
         }
       },
     });
 
   const isPasswordMatch = values.password === values.confirmPassword;
-  const updateButtonDisabled = !isPasswordMatch;
+  console.log(errors);
 
   return (
     <>
@@ -273,6 +271,9 @@ const AddUser = () => {
                       InputLabelProps={{
                         shrink: true, // To ensure the label is always shown when type is date
                       }}
+                      inputProps={{
+                        max: calculateMaxDate(18).toISOString().split("T")[0],
+                      }}
                     />
                   </Grid>
 
@@ -347,8 +348,10 @@ const AddUser = () => {
                       sx={{
                         padding: "6px 16px",
                       }}
+                      disabled={loader}
+                      endIcon={loader && <CircularProgress size={25} />}
                     >
-                      Add User
+                      {isUpdatedCall ? <>Update</> : <>Add User</>}
                     </Button>
                   </Grid>
                 </Grid>
