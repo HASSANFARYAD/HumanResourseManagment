@@ -8,16 +8,24 @@ import { toast } from "react-toastify";
 import { baseUrl } from "../../utils/_envConfig";
 import { getAuthConfig } from "../../utils/_apiConfig";
 
-export const addNewUser = createAsyncThunk(
-  "user/addNewUser",
+export const addUpdateUser = createAsyncThunk(
+  "user/addUpdateUser",
   async (users, { rejectWithValue, getState, dispatch }) => {
     try {
       const config = getAuthConfig(getState);
-      const response = await axios.post(
-        `${baseUrl}User/NewRecord`,
-        users,
-        config
-      );
+      let response;
+
+      // Check if user ID exists, indicating whether it's an update or a new record
+      if (!users.id) {
+        response = await axios.post(`${baseUrl}User/NewRecord`, users, config);
+      } else {
+        response = await axios.put(
+          `${baseUrl}User/UpdateRecord`,
+          users,
+          config
+        );
+      }
+
       const responseBack = processApiResponse(
         response,
         dispatch,
