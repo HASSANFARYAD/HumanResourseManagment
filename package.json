@@ -16,6 +16,7 @@
     "axios": "^1.7.6",
     "dotenv": "^16.4.5",
     "formik": "^2.4.6",
+    "mui-tel-input": "^6.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-draggable": "^4.4.6",

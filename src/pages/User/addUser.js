@@ -23,6 +23,7 @@ import { addUpdateUser } from "../../redux/Actions/userActions";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation } from "react-router";
 import { calculateMaxDate } from "../../utils/_helpers";
+import { MuiTelInput } from "mui-tel-input";
 
 const AddUser = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const AddUser = () => {
     DOB: recordForUpdate?.dob || "",
     contactNumber: recordForUpdate?.contactNumber || "",
     address: recordForUpdate?.address || "",
-    gender: recordForUpdate?.gender || "",
+    gender: recordForUpdate?.gender || "male",
     latitude: recordForUpdate?.latitude || "",
     longitude: recordForUpdate?.longitude || "",
     profile: recordForUpdate?.profile || "",
@@ -70,7 +71,7 @@ const AddUser = () => {
       .email("Please enter a valid email address.")
       .required("Email is a required field."),
     contactNumber: Yup.string()
-      .min(11, "Phone Number must be at least 11 digits long.")
+      .min(9, "Phone Number must be 9 digits long.")
       .required("Phone Number is a required field."),
     DOB: Yup.date()
       .required("Date of Birth is a required field.")
@@ -110,7 +111,6 @@ const AddUser = () => {
     });
 
   const isPasswordMatch = values.password === values.confirmPassword;
-  console.log(errors);
 
   return (
     <>
@@ -242,13 +242,34 @@ const AddUser = () => {
                       </Grid>
                     </>
                   )}
-                  <Grid item xs={12} sm={6}>
+                  {/* <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
                       label="Phone Number"
                       name="contactNumber"
                       value={values.contactNumber}
                       onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={
+                        touched.contactNumber && Boolean(errors.contactNumber)
+                      }
+                      helperText={touched.contactNumber && errors.contactNumber}
+                    />
+                  </Grid> */}
+
+                  <Grid item xs={12} sm={6}>
+                    <MuiTelInput
+                      defaultCountry="US"
+                      fullWidth
+                      label="Phone Number"
+                      name="contactNumber"
+                      value={values.contactNumber}
+                      disableDropdown
+                      onChange={(value) =>
+                        handleChange({
+                          target: { name: "contactNumber", value },
+                        })
+                      }
                       onBlur={handleBlur}
                       error={
                         touched.contactNumber && Boolean(errors.contactNumber)
@@ -313,6 +334,11 @@ const AddUser = () => {
                       onBlur={handleBlur}
                       error={touched.longitude && Boolean(errors.longitude)}
                       helperText={touched.longitude && errors.longitude}
+                      slotProps={{
+                        inputLabel: {
+                          shrink: true,
+                        },
+                      }}
                     />
                   </Grid>
 
