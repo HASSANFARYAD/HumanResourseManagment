@@ -22,6 +22,9 @@ import ProtectedLayout from "../components/Layouts/protected";
 import AddUser from "../pages/User/addUser";
 import UsersList from "../pages/User/List";
 
+import AddUpdateCategory from "../pages/Category/add";
+import Categories from "../pages/Category/list";
+
 const createRoute = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -38,6 +41,9 @@ const createRoute = createBrowserRouter(
           <Route path="update-password" element={<UpdatePassword />} />
           <Route path="add-user" element={<AddUser />} />
           <Route path="users-list" element={<UsersList />} />
+
+          <Route path="add" element={<AddUpdateCategory />} />
+          <Route path="categories" element={<Categories />} />
         </Route>
       </Route>
     </>

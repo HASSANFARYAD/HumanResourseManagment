@@ -43,8 +43,8 @@ const GetSideBar = ({ isOpen }) => {
   const isSelected = (path) => location.pathname === path;
 
   useEffect(() => {
-    if (location.pathname === "/profile") {
-      setOpenMenu("Calendar");
+    if (location.pathname === "/add") {
+      setOpenMenu("Manage Categories");
     } else if (
       location.pathname === "/add-user" ||
       location.pathname === "/users-list"
@@ -205,23 +205,24 @@ const GetSideBar = ({ isOpen }) => {
 
           <ListItem
             sx={{ position: "relative", my: 1 }}
-            onMouseEnter={() => handleMouseEnter("Calendar")}
+            onMouseEnter={() => handleMouseEnter("Manage Categories")}
             onMouseLeave={() => handleMouseLeave()}
             button
-            onClick={() => handleClick("Calendar")}
+            onClick={() => handleClick("Manage Categories")}
           >
             <ListItemIcon>
               <CalendarTodayIcon />
             </ListItemIcon>
-            {isOpen || hoveredItem === "Calendar" ? (
-              <ListItemText primary="Calendar" sx={{ margin: 0 }} />
+            {isOpen || hoveredItem === "Manage Categories" ? (
+              <ListItemText primary="Manage Categories" sx={{ margin: 0 }} />
             ) : (
               <Box
                 sx={{
                   position: "absolute",
                   left: drawerWidthCollapsed,
                   top: 0,
-                  visibility: hoveredItem === "Calendar" ? "visible" : "hidden",
+                  visibility:
+                    hoveredItem === "Manage Categories" ? "visible" : "hidden",
                   backgroundColor: "white",
                   borderRadius: 1,
                   padding: 1,
@@ -235,12 +236,16 @@ const GetSideBar = ({ isOpen }) => {
               </Box>
             )}
             {isOpen &&
-              (openMenu === "Calendar" ? <ExpandLess /> : <ExpandMore />)}
+              (openMenu === "Manage Categories" ? (
+                <ExpandLess />
+              ) : (
+                <ExpandMore />
+              ))}
           </ListItem>
-          <Collapse in={openMenu === "Calendar"}>
+          <Collapse in={openMenu === "Manage Categories"}>
             <List component="div" disablePadding>
               <NavLink
-                to="/profile"
+                to="/add"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <ListItem
@@ -249,7 +254,7 @@ const GetSideBar = ({ isOpen }) => {
                     display: "flex",
                     alignItems: "center",
                     position: "relative",
-                    backgroundColor: isSelected("/profile")
+                    backgroundColor: isSelected("/add")
                       ? "rgba(25, 118, 210, 0.2)"
                       : "inherit", // Highlight selected
                     "&:hover .nestedItemLabel": {
@@ -260,8 +265,8 @@ const GetSideBar = ({ isOpen }) => {
                   <ListItemIcon>
                     <AssessmentIcon />
                   </ListItemIcon>
-                  {isOpen || hoveredItem === "TodayAppointments" ? (
-                    <ListItemText primary="Today's Appointments" />
+                  {isOpen || hoveredItem === "add" ? (
+                    <ListItemText primary="Add Category" />
                   ) : (
                     <Box
                       className="nestedItemLabel"
@@ -276,9 +281,7 @@ const GetSideBar = ({ isOpen }) => {
                         width: "auto",
                         whiteSpace: "nowrap",
                         visibility:
-                          hoveredItem === "TodayAppointments"
-                            ? "visible"
-                            : "hidden",
+                          hoveredItem === "add" ? "visible" : "hidden",
                       }}
                     >
                       <Typography variant="body2">

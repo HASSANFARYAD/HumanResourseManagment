@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteRecord } from "../Actions/apiActions";
+import { deleteRecord, getDropdowns } from "../Actions/apiActions";
+import { getCategoriesRecords } from "../Actions/categoryAction";
 
 const apiSlice = createSlice({
   name: "api",

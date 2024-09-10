@@ -31,3 +31,29 @@ export const deleteRecord = createAsyncThunk(
     }
   }
 );
+
+export const getDropdowns = createAsyncThunk(
+  "user/getDropdowns",
+  async (endpoint, { rejectWithValue, getState, dispatch }) => {
+    const config = getAuthConfig(getState);
+
+    try {
+      const url = baseUrl + endpoint;
+      const requestFn = () => axios.get(url, config);
+      const responseBack = await handleApiRequest(
+        requestFn,
+        dispatch,
+        getAuthToken(getState)
+      );
+
+      return responseBack?.data;
+    } catch (error) {
+      handleApiError(
+        error?.response?.data,
+        dispatch,
+        getState().authentication?.userAuth
+      );
+      rejectWithValue(error);
+    }
+  }
+);
