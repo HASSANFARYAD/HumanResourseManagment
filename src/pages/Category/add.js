@@ -9,7 +9,6 @@ import {
   Grid,
   TextField,
   CardContent,
-  Typography,
   FormControl,
   InputLabel,
   Select,
@@ -21,6 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation } from "react-router";
 import { addUpdateCategory } from "../../redux/Actions/categoryAction";
 import { getDropdowns } from "../../redux/Actions/apiActions";
+import FileToBase64 from "../../components/custom/FiletoBase64";
 
 const AddUpdateCategory = () => {
   const dispatch = useDispatch();
@@ -30,6 +30,11 @@ const AddUpdateCategory = () => {
   const recordForUpdate = location.state;
 
   const [getCategorieDropdown, setCategorieDropdown] = useState([]);
+  const [base64Images, setBase64Images] = useState([]);
+
+  const handleFilesConverted = (files) => {
+    setBase64Images(files);
+  };
 
   useEffect(() => {
     if (recordForUpdate) {
@@ -69,7 +74,19 @@ const AddUpdateCategory = () => {
       onSubmit: async (values) => {
         try {
           setLoader(true);
-          await dispatch(addUpdateCategory(values));
+          const filePayload = base64Images.map((image) => ({
+            Id: null,
+            FileName: image.fileName,
+            FileType: image.fileType,
+            FileContent: image.base64,
+            FileSize: null,
+            ContentType: image.fileType,
+          }));
+          const payload = {
+            ...values,
+            file: filePayload[0], // Use the base64 images in your payload
+          };
+          await dispatch(addUpdateCategory(payload));
         } catch (error) {
           console.error(error);
         } finally {
@@ -77,8 +94,6 @@ const AddUpdateCategory = () => {
         }
       },
     });
-
-  console.log(getCategorieDropdown);
 
   return (
     <>
@@ -92,6 +107,33 @@ const AddUpdateCategory = () => {
             <CustomCard>
               <CardContent>
                 <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Parent Category
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Parent Category"
+                        value={values.parentId}
+                        onBlur={handleBlur("parentId")}
+                        onChange={handleChange("parentId")}
+                      >
+                        {getCategorieDropdown &&
+                          getCategorieDropdown.map((category) => (
+                            <MenuItem
+                              key={category.id}
+                              value={category.id}
+                              selected={values.parentId === category.id}
+                            >
+                              {category.name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
@@ -110,6 +152,10 @@ const AddUpdateCategory = () => {
                       fullWidth
                       label="Description"
                       name="description"
+                      placeholder="Description"
+                      multiline
+                      rows={5}
+                      maxRows={10}
                       value={values.description}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -119,27 +165,7 @@ const AddUpdateCategory = () => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <FormControl fullWidth variant="standard">
-                      <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={values.parentId}
-                        onBlur={handleBlur("parentId")}
-                        onChange={handleChange("parentId")}
-                      >
-                        {getCategorieDropdown &&
-                          getCategorieDropdown.map((category) => (
-                            <MenuItem
-                              key={category.id}
-                              value={category.id}
-                              selected={values.parentId === category.id}
-                            >
-                              {category.name}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
+                    <FileToBase64 onFilesConverted={handleFilesConverted} />
                   </Grid>
 
                   <Grid item xs={12} display="flex" justifyContent="center">

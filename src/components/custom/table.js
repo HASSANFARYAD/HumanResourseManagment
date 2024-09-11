@@ -278,13 +278,17 @@ function CustomTable({
                         <StyledTableCell key={header.id} align="center">
                           {header.id === "0" ? (
                             <CustomButtons buttons={buttons} row={row} />
-                          ) : header.id === "profilePath" ? (
+                          ) : header.id === "profilePath" ||
+                            header.id === "Image" ? (
                             <a
-                              href={row[header.id]}
+                              href={row.image}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              View Profile
+                              <img
+                                src={row.image}
+                                style={{ width: "50px", height: "50px" }}
+                              />
                             </a>
                           ) : (
                             row[header.id]

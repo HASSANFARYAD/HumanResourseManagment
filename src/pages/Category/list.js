@@ -43,6 +43,7 @@ const Categories = () => {
 
   const headers = [
     { id: "0", label: "Action" },
+    { id: "Image", label: "Image" },
     { id: "name", label: "Name" },
     { id: "parentId", label: "Parent" },
     { id: "description", label: "Description" },
@@ -52,11 +53,13 @@ const Categories = () => {
     setDeleteLoader(true);
     const endpoint = `Category/DeleteRecord?id=${isDelete}`;
     await dispatch(deleteRecord(endpoint));
+    fetchRecords(0, pageLength);
     handleClose();
   };
 
   const onUpdate = (row) => {
     setUpdateRecord(row);
+    navigate("/add", { state: row });
   };
 
   const handleOpen = (id) => {
