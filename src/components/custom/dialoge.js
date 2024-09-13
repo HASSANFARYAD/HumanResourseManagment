@@ -46,7 +46,7 @@ const DraggableDialog = ({
         PaperComponent={PaperComponentOverride || PaperComponent}
         aria-labelledby="draggable-dialog-title"
         disableEscapeKeyDown
-        fullWidth="sm"
+        fullWidth
         loader={loader}
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
@@ -55,6 +55,7 @@ const DraggableDialog = ({
         <DialogContent>
           {content.map((item, index) => (
             <DialogContentText
+              key={index}
               sx={{
                 color: theme.palette[item.color]?.main || "inherit", // Dynamically apply color from theme
               }}
@@ -67,7 +68,7 @@ const DraggableDialog = ({
           {actions.map((action, index) => (
             <>
               <Button
-                key={index}
+                key={action.id}
                 onClick={action.onClick}
                 color={action.color || "primary"}
                 variant={action.variant}

@@ -165,7 +165,10 @@ const AddUpdateCategory = () => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <FileToBase64 onFilesConverted={handleFilesConverted} />
+                    <FileToBase64
+                      onFilesConverted={handleFilesConverted}
+                      multiple={false}
+                    />
                   </Grid>
 
                   <Grid item xs={12} display="flex" justifyContent="center">
