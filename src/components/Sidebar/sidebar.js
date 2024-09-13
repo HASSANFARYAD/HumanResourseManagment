@@ -22,6 +22,12 @@ import {
   ExpandLess,
   ExpandMore,
 } from "@mui/icons-material";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import CategoryIcon from "@mui/icons-material/Category";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
 const drawerWidthOpen = 280;
 const drawerWidthCollapsed = 60;
@@ -169,53 +175,6 @@ const GetSideBar = ({ isOpen }) => {
             </ListItem>
           </NavLink>
 
-          <NavLink
-            to="preview-Link"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItem
-              button="true"
-              sx={{
-                position: "relative",
-                width: isOpen ? drawerWidthOpen : drawerWidthCollapsed,
-                backgroundColor: isSelected("/preview-Link")
-                  ? "rgba(25, 118, 210, 0.2)"
-                  : "inherit", // Highlight selected
-                "&.hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.08)",
-                },
-                my: 1,
-              }}
-              onMouseEnter={() => handleMouseEnter("PreviewLink")}
-              onMouseLeave={() => handleMouseLeave()}
-            >
-              <ListItemIcon>
-                <DashboardIcon />
-              </ListItemIcon>
-              {isOpen || hoveredItem === "PreviewLink" ? (
-                <ListItemText primary="PreviewLink" sx={{ margin: 0 }} />
-              ) : (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    left: drawerWidthCollapsed,
-                    visibility:
-                      hoveredItem === "PreviewLink" ? "visible" : "hidden",
-                    backgroundColor: "rgba(0, 0, 0, 0.7)",
-                    borderRadius: 1,
-                    padding: 1,
-                    boxShadow: 1,
-                    zIndex: 10,
-                    whiteSpace: "nowrap",
-                    width: drawerWidthCollapsed,
-                  }}
-                >
-                  <Typography variant="body2">Preview Link</Typography>
-                </Box>
-              )}
-            </ListItem>
-          </NavLink>
-
           <ListItem
             sx={{ position: "relative", my: 1 }}
             onMouseEnter={() => handleMouseEnter("Manage Categories")}
@@ -224,7 +183,7 @@ const GetSideBar = ({ isOpen }) => {
             onClick={() => handleClick("Manage Categories")}
           >
             <ListItemIcon>
-              <CalendarTodayIcon />
+              <CategoryIcon />
             </ListItemIcon>
             {isOpen || hoveredItem === "Manage Categories" ? (
               <ListItemText primary="Manage Categories" sx={{ margin: 0 }} />
@@ -276,7 +235,7 @@ const GetSideBar = ({ isOpen }) => {
                   }}
                 >
                   <ListItemIcon>
-                    <AssessmentIcon />
+                    <AddCircleOutlineIcon />
                   </ListItemIcon>
                   {isOpen || hoveredItem === "add" ? (
                     <ListItemText primary="Add Category" />
@@ -297,9 +256,7 @@ const GetSideBar = ({ isOpen }) => {
                           hoveredItem === "add" ? "visible" : "hidden",
                       }}
                     >
-                      <Typography variant="body2">
-                        Today's Appointments
-                      </Typography>
+                      <Typography variant="body2">Add New Category</Typography>
                     </Box>
                   )}
                 </ListItem>
@@ -324,7 +281,7 @@ const GetSideBar = ({ isOpen }) => {
                   }}
                 >
                   <ListItemIcon>
-                    <AssessmentIcon />
+                    <ListAltIcon />
                   </ListItemIcon>
                   {isOpen || hoveredItem === "add" ? (
                     <ListItemText primary="Categories List" />
@@ -361,7 +318,7 @@ const GetSideBar = ({ isOpen }) => {
             onClick={() => handleClick("Manage Users")}
           >
             <ListItemIcon>
-              <CalendarTodayIcon />
+              <ManageAccountsIcon />
             </ListItemIcon>
             {isOpen || hoveredItem === "Manage Users" ? (
               <ListItemText primary="Manage Users" sx={{ margin: 0 }} />
@@ -409,7 +366,7 @@ const GetSideBar = ({ isOpen }) => {
                   }}
                 >
                   <ListItemIcon>
-                    <AssessmentIcon />
+                    <PersonAddAltIcon />
                   </ListItemIcon>
                   {isOpen || hoveredItem === "Add User" ? (
                     <ListItemText primary="Add User" />
@@ -455,7 +412,7 @@ const GetSideBar = ({ isOpen }) => {
                   }}
                 >
                   <ListItemIcon>
-                    <AssessmentIcon />
+                    <PeopleOutlineIcon />
                   </ListItemIcon>
                   {isOpen || hoveredItem === "Users List" ? (
                     <ListItemText primary="Users List" />

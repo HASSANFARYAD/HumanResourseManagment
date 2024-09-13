@@ -24,6 +24,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    minWidth: "100px",
   },
 }));
 
@@ -169,6 +170,11 @@ function CustomTable({
     return pagination;
   };
 
+  const handleSearch = () => {
+    setPage(0);
+    onPageChange(0, rowsPerPage, "", "", search);
+  };
+
   return (
     <Paper>
       <div
@@ -210,8 +216,6 @@ function CustomTable({
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-              setPage(0);
-              onPageChange(0, rowsPerPage, "", "", e.target.value);
             }}
             sx={{
               "& .css-psxfu6-MuiInputBase-root-MuiOutlinedInput-root": {
@@ -228,6 +232,7 @@ function CustomTable({
               padding: "6px 12px",
               borderRadius: 0,
             }}
+            onClick={() => handleSearch()}
           >
             <SearchOutlinedIcon />
           </Button>
@@ -276,10 +281,10 @@ function CustomTable({
                     <StyledTableRow key={row.id}>
                       {headers.map((header) => (
                         <StyledTableCell key={header.id} align="center">
-                          {header.id === "0" ? (
+                          {header.column === "Action" ? (
                             <CustomButtons buttons={buttons} row={row} />
-                          ) : header.id === "profilePath" ||
-                            header.id === "Image" ? (
+                          ) : header.column === "profilePath" ||
+                            header.column === "image" ? (
                             <a
                               href={row.image}
                               target="_blank"
@@ -291,7 +296,7 @@ function CustomTable({
                               />
                             </a>
                           ) : (
-                            row[header.id]
+                            row[header.column]
                           )}
                         </StyledTableCell>
                       ))}

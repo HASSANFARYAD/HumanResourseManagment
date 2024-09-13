@@ -84,7 +84,8 @@ const AddUpdateCategory = () => {
           }));
           const payload = {
             ...values,
-            file: filePayload[0], // Use the base64 images in your payload
+            file: filePayload[0],
+            files: filePayload, // Use the base64 images in your payload
           };
           await dispatch(addUpdateCategory(payload));
         } catch (error) {
@@ -168,6 +169,7 @@ const AddUpdateCategory = () => {
                     <FileToBase64
                       onFilesConverted={handleFilesConverted}
                       multiple={false}
+                      fileType={"image"}
                     />
                   </Grid>
 

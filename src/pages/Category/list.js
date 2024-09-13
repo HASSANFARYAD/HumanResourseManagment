@@ -42,11 +42,11 @@ const Categories = () => {
   ];
 
   const headers = [
-    { id: "0", label: "Action" },
-    { id: "Image", label: "Image" },
-    { id: "name", label: "Name" },
-    { id: "parentId", label: "Parent" },
-    { id: "description", label: "Description" },
+    { id: "0", label: "Action", column: "Action" },
+    { id: "0", label: "Image", column: "image" },
+    { id: "name", label: "Name", column: "name" },
+    { id: "0", label: "Parent", column: "parentName" },
+    { id: "description", label: "Description", column: "description" },
   ];
 
   const handleDelete = async () => {

@@ -42,12 +42,12 @@ const UsersList = () => {
   ];
 
   const headers = [
-    { id: "0", label: "Action" },
-    { id: "firstName", label: "First Name" },
-    { id: "lastName", label: "Last Name" },
-    { id: "email", label: "Email" },
-    { id: "userName", label: "Username" },
-    { id: "role", label: "Role" },
+    { id: "0", label: "Action", column: "Action" },
+    { id: "firstName", label: "First Name", column: "firstName" },
+    { id: "lastName", label: "Last Name", column: "lastName" },
+    { id: "email", label: "Email", column: "email" },
+    { id: "userName", label: "Username", column: "userName" },
+    { id: "role", label: "Role", column: "role" },
   ];
 
   const handleDelete = async () => {
