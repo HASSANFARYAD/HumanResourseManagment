@@ -42,7 +42,7 @@ const createRoute = createBrowserRouter(
           <Route path="add-user" element={<AddUser />} />
           <Route path="users-list" element={<UsersList />} />
 
-          <Route path="add" element={<AddUpdateCategory />} />
+          <Route path="add-categories" element={<AddUpdateCategory />} />
           <Route path="categories" element={<Categories />} />
         </Route>
       </Route>
