@@ -13,6 +13,14 @@ export const menuItems = [
     icon: <DashboardIcon />,
   },
   {
+    title: "Manage Users",
+    icon: <ManageAccountsIcon />,
+    subItems: [
+      { title: "Add User", path: "/add-user", icon: <PersonAddAltIcon /> },
+      { title: "Users List", path: "/users-list", icon: <PeopleOutlineIcon /> },
+    ],
+  },
+  {
     title: "Manage Categories",
     icon: <CategoryIcon />,
     subItems: [
@@ -22,14 +30,6 @@ export const menuItems = [
         icon: <AddCircleOutlineIcon />,
       },
       { title: "Categories List", path: "/categories", icon: <ListAltIcon /> },
-    ],
-  },
-  {
-    title: "Manage Users",
-    icon: <ManageAccountsIcon />,
-    subItems: [
-      { title: "Add User", path: "/add-user", icon: <PersonAddAltIcon /> },
-      { title: "Users List", path: "/users-list", icon: <PeopleOutlineIcon /> },
     ],
   },
 ];
