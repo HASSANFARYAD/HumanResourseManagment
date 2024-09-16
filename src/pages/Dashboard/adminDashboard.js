@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Grid } from "@mui/material";
@@ -8,6 +8,7 @@ import EventBusyIcon from "@mui/icons-material/EventBusy";
 import AssignmentLateIcon from "@mui/icons-material/AssignmentLate";
 import CustomBox from "../../components/custom/box";
 import CustomCard from "../../theme-styles/customCard";
+import HorizontalBars from "../../components/Charts/barChart";
 
 const AdminDashboard = () => {
   const data = useSelector((state) => state?.authentication?.userAuth);
@@ -18,7 +19,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <Grid container spacing={2} className="invoice-card-row">
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={6} xl={3}>
           <CustomCard
             sx={{
@@ -29,8 +30,8 @@ const AdminDashboard = () => {
             <CustomBox
               icon={
                 <ReceiptIcon
-                  fontSize="medium"
                   sx={{
+                    fontSize: "45px",
                     border: "1px  solid #fff",
                     borderRadius: "100%",
                     padding: "7px",
@@ -53,8 +54,8 @@ const AdminDashboard = () => {
             <CustomBox
               icon={
                 <CheckBoxIcon
-                  fontSize="medium"
                   sx={{
+                    fontSize: "45px",
                     border: "1px  solid #fff",
                     borderRadius: "100%",
                     padding: "7px",
@@ -77,8 +78,8 @@ const AdminDashboard = () => {
             <CustomBox
               icon={
                 <EventBusyIcon
-                  fontSize="medium"
                   sx={{
+                    fontSize: "45px",
                     border: "1px  solid #fff",
                     borderRadius: "100%",
                     padding: "7px",
@@ -101,8 +102,8 @@ const AdminDashboard = () => {
             <CustomBox
               icon={
                 <AssignmentLateIcon
-                  fontSize="medium"
                   sx={{
+                    fontSize: "45px",
                     border: "1px  solid #fff",
                     borderRadius: "100%",
                     padding: "7px",
@@ -112,6 +113,14 @@ const AdminDashboard = () => {
               value1={"2478"}
               value2={"Total Invoices"}
             />
+          </CustomCard>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={2} my={2}>
+        <Grid item sm={12} xl={6}>
+          <CustomCard>
+            <HorizontalBars />
           </CustomCard>
         </Grid>
       </Grid>

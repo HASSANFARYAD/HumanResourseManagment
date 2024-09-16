@@ -13,12 +13,17 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import LockResetIcon from "@mui/icons-material/LockReset";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { logoutAction } from "../../redux/Actions/authActions";
+import { useThemeContext } from "../../theme-styles/themeContext";
 
 const Navbar = ({ toggleSidebar }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { userAuth } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
+  const { darkMode, toggleTheme } = useThemeContext(); // Use theme context
 
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
@@ -31,7 +36,9 @@ const Navbar = ({ toggleSidebar }) => {
     <AppBar
       position="fixed"
       sx={{
-        backgroundImage: "linear-gradient(to right, #D60BFF, #304FFE,#D60BFF)",
+        backgroundImage: darkMode
+          ? "linear-gradient(195deg, #333, #777,#333)"
+          : "linear-gradient(195deg, #D60BFF, #304FFE,#D60BFF)",
       }}
     >
       <Toolbar>
@@ -49,6 +56,11 @@ const Navbar = ({ toggleSidebar }) => {
             `Welcome, ${userAuth.firstName} ${userAuth.lastName}`}
         </Typography>
 
+        {/* Theme Toggle Button */}
+        <IconButton onClick={toggleTheme} color="inherit">
+          {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+
         <IconButton color="inherit" onClick={handleMenuOpen}>
           <Avatar
             src={
@@ -58,6 +70,7 @@ const Navbar = ({ toggleSidebar }) => {
             alt={userAuth.firstName}
           />
         </IconButton>
+
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
@@ -68,12 +81,8 @@ const Navbar = ({ toggleSidebar }) => {
             Profile
           </MenuItem>
           <MenuItem component={NavLink} to="/update-password">
-            <AccountCircle sx={{ mr: 2 }} />
+            <LockResetIcon sx={{ mr: 2 }} />
             Update Password
-          </MenuItem>
-          <MenuItem component={NavLink} to="/setting">
-            <AccountCircle sx={{ mr: 2 }} />
-            Settings
           </MenuItem>
           <Divider />
           <MenuItem onClick={() => handleLogout()}>

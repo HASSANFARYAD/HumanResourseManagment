@@ -5,9 +5,8 @@ import { useDispatch } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import DraggableDialog from "../../components/custom/dialoge";
-import { Box } from "@mui/material";
 import { deleteRecord } from "../../redux/Actions/apiActions";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const UsersList = () => {
   const dispatch = useDispatch();
@@ -20,7 +19,6 @@ const UsersList = () => {
   const [deleteLoader, setDeleteLoader] = useState(false);
   const [open, setOpen] = useState(false);
   const [isDelete, setIsDelete] = useState();
-  const [updateRecord, setUpdateRecord] = useState(null);
 
   const buttons = [
     {
@@ -53,12 +51,11 @@ const UsersList = () => {
   const handleDelete = async () => {
     setDeleteLoader(true);
     const endpoint = `User/DeleteRecord?id=${isDelete}`;
-    const response = await dispatch(deleteRecord(endpoint));
+    await dispatch(deleteRecord(endpoint));
     handleClose();
   };
 
   const onUpdate = (row) => {
-    setUpdateRecord(row);
     navigate("/add-user", { state: row });
   };
 

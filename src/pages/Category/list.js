@@ -4,9 +4,8 @@ import { useDispatch } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import DraggableDialog from "../../components/custom/dialoge";
-import { Box } from "@mui/material";
 import { deleteRecord } from "../../redux/Actions/apiActions";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { getCategoriesRecords } from "../../redux/Actions/categoryAction";
 
 const Categories = () => {
@@ -20,7 +19,6 @@ const Categories = () => {
   const [deleteLoader, setDeleteLoader] = useState(false);
   const [open, setOpen] = useState(false);
   const [isDelete, setIsDelete] = useState();
-  const [updateRecord, setUpdateRecord] = useState(null);
 
   const buttons = [
     {
@@ -58,8 +56,7 @@ const Categories = () => {
   };
 
   const onUpdate = (row) => {
-    setUpdateRecord(row);
-    navigate("/add", { state: row });
+    navigate("/add-categories", { state: row });
   };
 
   const handleOpen = (id) => {
@@ -90,7 +87,7 @@ const Categories = () => {
 
   const fetchRecords = async (
     pageNumber = 0,
-    pageLength = 5, // Remove pageLength default from here
+    pageLength = 5,
     sortColumn = "",
     sortDirection = "",
     searchParam = ""

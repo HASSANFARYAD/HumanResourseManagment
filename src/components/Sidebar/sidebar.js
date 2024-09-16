@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { menuItems } from "../../utils/_sidbarMenu";
+import { useThemeContext } from "../../theme-styles/themeContext";
 
 const drawerWidthOpen = 280;
 const drawerWidthCollapsed = 60;
@@ -35,6 +36,8 @@ const GetSideBar = ({ isOpen }) => {
   };
 
   const isSelected = (path) => location.pathname === path;
+
+  const darkMode = useThemeContext();
 
   useEffect(() => {
     // Open specific menu based on the URL path
@@ -67,6 +70,9 @@ const GetSideBar = ({ isOpen }) => {
           position: "fixed",
           top: isOpen ? 50 : 70,
           boxShadow: "4px 0px 6px rgba(0, 0, 0, 0.2)",
+          backgroundImage: darkMode
+            ? "linear-gradient(90deg, #333, #555, #333)"
+            : "linear-gradient(195deg, #D60BFF, #304FFE,#D60BFF)",
         },
       }}
     >
