@@ -6,15 +6,14 @@ import {
 } from "../../utils/_handler/_exceptions";
 import { toast } from "react-toastify";
 import { baseUrl } from "../../utils/_envConfig";
-import { getAuthConfig, getAuthToken } from "../../utils/_apiConfig";
-import { handleApiRequest } from "../../utils/_handler/_handleApiRequest";
+import { getAuthConfig, getAuthUserId } from "../../utils/_apiConfig";
 
 export const addUpdateCategory = createAsyncThunk(
   "category/addUpdateCategory",
   async (entity, { rejectWithValue, getState, dispatch }) => {
     try {
       const config = getAuthConfig(getState);
-
+      entity.userId = getAuthUserId(getState);
       let response;
 
       // Check if user ID exists, indicating whether it's an update or a new record

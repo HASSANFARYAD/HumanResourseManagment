@@ -69,10 +69,9 @@ const GetSideBar = ({ isOpen }) => {
           transition: "width 0.3s ease",
           position: "fixed",
           top: isOpen ? 50 : 70,
-          boxShadow: "4px 0px 6px rgba(0, 0, 0, 0.2)",
-          backgroundImage: darkMode
-            ? "linear-gradient(90deg, #333, #555, #333)"
-            : "linear-gradient(195deg, #D60BFF, #304FFE,#D60BFF)",
+          boxShadow: !darkMode
+            ? "4px 0px 6px rgba(0, 0, 0, 0.2)"
+            : "6px 0px 12px rgba(255, 255, 255, 0.5)",
         },
       }}
     >

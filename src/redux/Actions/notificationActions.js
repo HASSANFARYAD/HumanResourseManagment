@@ -13,14 +13,48 @@ import {
 } from "../../utils/_apiConfig";
 import { handleApiRequest } from "../../utils/_handler/_handleApiRequest";
 
-export const deleteRecord = createAsyncThunk(
-  "user/deleteRecord",
-  async (endpoint, { rejectWithValue, getState, dispatch }) => {
+export const getNotifications = createAsyncThunk(
+  "user/getNotifications",
+  async (_, { rejectWithValue, getState, dispatch }) => {
     const config = getAuthConfig(getState);
+    const userId = getAuthUserId(getState);
+    try {
+      const url = `${baseUrl}Notification/GetNotification?id=${userId}`;
+      const requestFn = () => axios.get(url, config);
+
+      // Call handleApiRequest to fetch notifications
+      const responseBack = await handleApiRequest(
+        requestFn,
+        dispatch,
+        getAuthToken(getState)
+      );
+
+      // Return the response data (list of notifications and unread count)
+      return responseBack.data;
+    } catch (error) {
+      // Handle API error and return rejected value
+      handleApiError(
+        error?.response?.data,
+        dispatch,
+        getState().authentication?.userAuth
+      );
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const markReadNotification = createAsyncThunk(
+  "user/markReadNotification",
+  async (record, { rejectWithValue, getState, dispatch }) => {
+    const config = getAuthConfig(getState);
+    const userId = getAuthUserId(getState);
+    if (record.type === "user") {
+      record.userId = userId;
+    }
 
     try {
-      const url = baseUrl + endpoint;
-      const requestFn = () => axios.delete(url, config);
+      const url = `${baseUrl}Notification/MarkAsRead?userId=${record.userId}&notificationId=${record.id}`;
+      const requestFn = () => axios.put(url, config, record);
       const responseBack = await handleApiRequest(
         requestFn,
         dispatch,
@@ -28,32 +62,6 @@ export const deleteRecord = createAsyncThunk(
       );
 
       toast.success(responseBack?.message);
-    } catch (error) {
-      handleApiError(
-        error?.response?.data,
-        dispatch,
-        getState().authentication?.userAuth
-      );
-      rejectWithValue(error);
-    }
-  }
-);
-
-export const getDropdowns = createAsyncThunk(
-  "user/getDropdowns",
-  async (endpoint, { rejectWithValue, getState, dispatch }) => {
-    const config = getAuthConfig(getState);
-
-    try {
-      const url = baseUrl + endpoint;
-      const requestFn = () => axios.get(url, config);
-      const responseBack = await handleApiRequest(
-        requestFn,
-        dispatch,
-        getAuthToken(getState)
-      );
-
-      return responseBack?.data;
     } catch (error) {
       handleApiError(
         error?.response?.data,

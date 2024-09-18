@@ -86,8 +86,6 @@ const FileToBase64 = ({ onFilesConverted, multiple, fileType }) => {
     const files = event.dataTransfer.files;
     handleFiles(files);
   };
-  console.log("updatedPreviews", imagePreviews);
-  console.log("updatedFiles", base64Files);
 
   return (
     <Container
