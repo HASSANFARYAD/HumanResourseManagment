@@ -1,16 +1,9 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  handleApiError,
-  processApiResponse,
-} from "../../utils/_handler/_exceptions";
+import { handleApiError } from "../../utils/_handler/_exceptions";
 import { toast } from "react-toastify";
 import { baseUrl } from "../../utils/_envConfig";
-import {
-  getAuthConfig,
-  getAuthToken,
-  getAuthUserId,
-} from "../../utils/_apiConfig";
+import { getAuthConfig, getAuthToken } from "../../utils/_apiConfig";
 import { handleApiRequest } from "../../utils/_handler/_handleApiRequest";
 
 export const deleteRecord = createAsyncThunk(

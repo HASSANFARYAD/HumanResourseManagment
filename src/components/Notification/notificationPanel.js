@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import * as signalR from "@microsoft/signalr";
-import { notificationURL } from "../../utils/_envConfig";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { truncateText, formatDateTime } from "../../utils/_helpers";
 import {
   Grid,
@@ -10,10 +8,9 @@ import {
   Typography,
   IconButton,
   Tooltip,
-} from "@mui/material"; // MUI imports
+} from "@mui/material";
 import { deleteRecord } from "../../redux/Actions/apiActions";
 import { markReadNotification } from "../../redux/Actions/notificationActions";
-import { toast } from "react-toastify";
 import { CheckCircleOutline, CancelOutlined } from "@mui/icons-material";
 import { useThemeContext } from "../../theme-styles/themeContext";
 
@@ -23,59 +20,20 @@ const NotificaltionPanel = ({
   setUnReadCount,
 }) => {
   const { darkMode } = useThemeContext();
-  const [hubConnection, setHubConnection] = useState(null);
   const [messages, setMessages] = useState([]);
   const [isDisabled, setDisabled] = useState(false);
-  const { userAuth } = useSelector((state) => state?.authentication);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const URL = `${notificationURL}notificationHub`;
-    console.log(URL);
-    const initializeSignalR = async () => {
-      const connection = new signalR.HubConnectionBuilder()
-        .withUrl(URL)
-        .build();
-
-      console.log(connection);
-      connection.on("RecieveMessage", (message, userId) => {
-        console.log(connection);
-        try {
-          const userIdsArray = JSON.parse(userId);
-          for (var item = 0; item <= userIdsArray.length; item++) {
-            if (userIdsArray[item] === userAuth.id) {
-              setMessages((prevMessages) => [...prevMessages, message]);
-              toast.info(message.description);
-              setUnReadCount((prevCount) => prevCount + 1);
-            }
-          }
-        } catch (error) {
-          console.log("error", error);
-        }
-      });
-
-      try {
-        await connection.start();
-        setHubConnection(connection);
-        console.log(connection);
-      } catch (err) {
-        console.error(err.toString());
-      }
-    };
-
-    initializeSignalR();
-
-    if (messages.length === 0 && notifications.length > 0) {
-      console.log("before setting", notifications);
-      setMessages(notifications);
-    }
-  }, []);
+    console.log("before setting", notifications);
+    setMessages(notifications);
+  }, [notifications]);
 
   const handleReadNotifications = async (values, type) => {
     setDisabled(true);
     try {
       const payload = {
-        type: type,
+        type,
         id: values,
         userId: "",
       };
@@ -85,6 +43,7 @@ const NotificaltionPanel = ({
       await dispatch(markReadNotification(payload));
       setUnReadCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
     } catch (error) {
+      console.error("Error marking notification as read:", error);
     } finally {
       setDisabled(false);
       handleNotificationPanel();
@@ -99,6 +58,7 @@ const NotificaltionPanel = ({
       await dispatch(deleteRecord(endPoint));
       setUnReadCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
     } catch (error) {
+      console.error("Error deleting notification:", error);
     } finally {
       setDisabled(false);
       handleNotificationPanel();

@@ -1,9 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  handleApiError,
-  processApiResponse,
-} from "../../utils/_handler/_exceptions";
+import { handleApiError } from "../../utils/_handler/_exceptions";
 import { toast } from "react-toastify";
 import { baseUrl } from "../../utils/_envConfig";
 import {

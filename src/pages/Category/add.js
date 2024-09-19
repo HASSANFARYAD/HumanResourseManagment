@@ -156,7 +156,6 @@ const AddUpdateCategory = () => {
                       placeholder="Description"
                       multiline
                       rows={5}
-                      maxRows={10}
                       value={values.description}
                       onChange={handleChange}
                       onBlur={handleBlur}

@@ -22,13 +22,13 @@ import { logoutAction } from "../../redux/Actions/authActions";
 import { NavLink } from "react-router-dom";
 import { getNotifications } from "../../redux/Actions/notificationActions";
 import NotificaltionPanel from "../Notification/notificationPanel";
+import { useSignalR } from "../../hooks/signalR";
 
 const Navbar = ({ toggleSidebar }) => {
+  const { notifications, unReadCount, setUnReadCount, setNotifications } =
+    useSignalR();
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
-  const [notifications, setNotifications] = useState([]);
-  const [unReadCount, setUnReadCount] = useState(0);
-  const [isUpdate, setUpdate] = useState(false);
   const { userAuth } = useSelector((state) => state.authentication);
   const { darkMode, toggleTheme } = useThemeContext();
   const dispatch = useDispatch();
@@ -50,13 +50,12 @@ const Navbar = ({ toggleSidebar }) => {
 
       if (getNotifications.fulfilled.match(response)) {
         const { records, unreadCount } = response.payload;
-        setNotifications(records); // Setting the notifications list
-        setUnReadCount(unreadCount); // Setting unread count
+        setNotifications(records);
+        setUnReadCount(unreadCount);
       }
     } catch (error) {
       console.error("Error fetching notifications:", error);
     } finally {
-      setUpdate(false);
     }
   };
 
@@ -128,7 +127,6 @@ const Navbar = ({ toggleSidebar }) => {
           </MenuItem>
           {notifications ? (
             <NotificaltionPanel
-              key={JSON.stringify(notifications)}
               notifications={notifications}
               handleNotificationPanel={fetchNotifications}
               setUnReadCount={setUnReadCount}
