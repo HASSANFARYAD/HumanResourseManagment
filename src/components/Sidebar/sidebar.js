@@ -112,7 +112,7 @@ const GetSideBar = ({ isOpen }) => {
           {menuItems.map((item, index) => (
             <React.Fragment key={index}>
               <ListItem
-                button
+                button="true"
                 onClick={() => (item.subItems ? handleClick(item.title) : null)}
                 onMouseEnter={() => handleMouseEnter(item.title)}
                 onMouseLeave={() => handleMouseLeave()}
@@ -158,7 +158,7 @@ const GetSideBar = ({ isOpen }) => {
                         style={{ textDecoration: "none", color: "inherit" }}
                       >
                         <ListItem
-                          button
+                          button="true"
                           sx={{
                             pl: 4,
                             backgroundColor: isSelected(subItem.path)

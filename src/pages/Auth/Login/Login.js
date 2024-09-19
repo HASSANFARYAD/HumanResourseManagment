@@ -4,14 +4,7 @@ import { postLogin } from "../../../redux/Actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import { NavLink, Navigate } from "react-router-dom";
-import {
-  Button,
-  TextField,
-  Grid,
-  Box,
-  Typography,
-  CircularProgress as Spinner,
-} from "@mui/material";
+import { Button, TextField, Grid, Box, Typography } from "@mui/material";
 
 const initialValues = {
   email: "",
@@ -47,7 +40,7 @@ function Login() {
   const loading = useSelector((state) => state?.authentication?.loading);
 
   if (data && data.id) {
-    if (data.role == "0") {
+    if (data.role === "0") {
       return <Navigate to="/admin" />;
     } else {
       return <Navigate to="/home" />;
@@ -103,6 +96,7 @@ function Login() {
                 onChange={handleChange("email")}
                 error={touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
+                autoComplete="true"
               />
 
               <TextField
@@ -116,6 +110,7 @@ function Login() {
                 onChange={handleChange("password")}
                 error={touched.password && !!errors.password}
                 helperText={touched.password && errors.password}
+                autoComplete="false"
               />
 
               <Button

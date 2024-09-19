@@ -34,7 +34,7 @@ export const ThemeContextProvider = ({ children }) => {
         dark: darkMode ? "#3700B3" : "#1A237E",
       },
       secondary: {
-        main: darkMode ? "#03DAC6" : "#D48800",
+        main: darkMode ? "#03DAC6" : "#333",
         light: darkMode ? "#03DAC6" : "#ffd740",
         dark: darkMode ? "#018786" : "#6c757d",
       },

@@ -32,7 +32,7 @@ export const SignalRProvider = ({ children }) => {
           }
         });
       } catch (err) {
-        console.error("SignalR Connection Error: ", err);
+        //console.error("SignalR Connection Error: ", err);
       }
     };
     startConnection();
@@ -44,7 +44,7 @@ export const SignalRProvider = ({ children }) => {
         .stop()
         .catch((err) => console.error("Error stopping connection: ", err));
     };
-  }, []);
+  }, [userAuth.id]);
 
   return (
     <SignalRContext.Provider
