@@ -285,16 +285,23 @@ function CustomTable({
                             <CustomButtons buttons={buttons} row={row} />
                           ) : header.column === "profilePath" ||
                             header.column === "image" ? (
-                            <a
-                              href={row.image}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <img
-                                src={row.image}
-                                style={{ width: "50px", height: "50px" }}
-                              />
-                            </a>
+                            <>
+                              {row.image ? (
+                                <a
+                                  href={row.image}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <img
+                                    src={row.image}
+                                    alt="Preview"
+                                    style={{ width: "50px", height: "50px" }}
+                                  />
+                                </a>
+                              ) : (
+                                <span>N/A</span>
+                              )}
+                            </>
                           ) : (
                             row[header.column]
                           )}

@@ -25,6 +25,9 @@ import UsersList from "../pages/User/List";
 import AddUpdateCategory from "../pages/Category/add";
 import Categories from "../pages/Category/list";
 
+import AddUpdateBrand from "../pages/Brand/add";
+import BrandsList from "../pages/Brand/list";
+
 const createRoute = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -44,6 +47,9 @@ const createRoute = createBrowserRouter(
 
           <Route path="add-categories" element={<AddUpdateCategory />} />
           <Route path="categories" element={<Categories />} />
+
+          <Route path="add-brand" element={<AddUpdateBrand />} />
+          <Route path="brands" element={<BrandsList />} />
         </Route>
       </Route>
     </>

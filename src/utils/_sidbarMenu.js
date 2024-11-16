@@ -32,4 +32,16 @@ export const menuItems = [
       { title: "Categories List", path: "/categories", icon: <ListAltIcon /> },
     ],
   },
+  {
+    title: "Manage Brands",
+    icon: <CategoryIcon />,
+    subItems: [
+      {
+        title: "Add Brand",
+        path: "/add-brand",
+        icon: <AddCircleOutlineIcon />,
+      },
+      { title: "Brand List", path: "/brands", icon: <ListAltIcon /> },
+    ],
+  },
 ];
