@@ -27,6 +27,8 @@ import Categories from "../pages/Category/list";
 
 import AddUpdateBrand from "../pages/Brand/add";
 import BrandsList from "../pages/Brand/list";
+import AddUpdateProduct from "../pages/Product/add";
+import ProductList from "../pages/Product/list";
 
 const createRoute = createBrowserRouter(
   createRoutesFromElements(
@@ -50,6 +52,9 @@ const createRoute = createBrowserRouter(
 
           <Route path="add-brand" element={<AddUpdateBrand />} />
           <Route path="brands" element={<BrandsList />} />
+
+          <Route path="product" element={<AddUpdateProduct />} />
+          <Route path="products" element={<ProductList />} />
         </Route>
       </Route>
     </>

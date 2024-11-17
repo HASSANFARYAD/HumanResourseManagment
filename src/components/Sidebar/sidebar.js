@@ -51,6 +51,16 @@ const GetSideBar = ({ isOpen }) => {
       location.pathname.startsWith("/users-list")
     ) {
       setOpenMenu("Manage Users");
+    } else if (
+      location.pathname.startsWith("/add-brand") ||
+      location.pathname.startsWith("/brands")
+    ) {
+      setOpenMenu("Manage Brands");
+    } else if (
+      location.pathname.startsWith("/product") ||
+      location.pathname.startsWith("/products")
+    ) {
+      setOpenMenu("Manage Products");
     } else {
       setOpenMenu(null);
     }

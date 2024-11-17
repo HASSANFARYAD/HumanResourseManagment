@@ -44,4 +44,16 @@ export const menuItems = [
       { title: "Brand List", path: "/brands", icon: <ListAltIcon /> },
     ],
   },
+  {
+    title: "Manage Products",
+    icon: <CategoryIcon />,
+    subItems: [
+      {
+        title: "Add Product",
+        path: "/product",
+        icon: <AddCircleOutlineIcon />,
+      },
+      { title: "Product List", path: "/products", icon: <ListAltIcon /> },
+    ],
+  },
 ];
