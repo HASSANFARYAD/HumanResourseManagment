@@ -43,7 +43,7 @@ export const addUpdateProduct = createAsyncThunk(
   }
 );
 
-export const getRecords = createAsyncThunk(
+export const getProducts = createAsyncThunk(
   "product/getProductList",
   async (
     { pageNumber, pageLength, sortColumn, sortDirection, searchParam },

@@ -5,6 +5,7 @@ import {
   getCategoriesRecords,
 } from "../Actions/categoryAction";
 import { addUpdateBrand, getRecords } from "../Actions/brandActions";
+import { addUpdateProduct, getProducts } from "../Actions/productActions";
 
 const apiSlice = createSlice({
   name: "api",
