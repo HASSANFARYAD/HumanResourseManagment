@@ -1,0 +1,6 @@
+.disabled-date {
+  pointer-events: none; /* Prevent any interaction */
+  background-color: #f8d7da; /* Light red */
+  pointer-events: none;
+  opacity: 0.6;
+}
