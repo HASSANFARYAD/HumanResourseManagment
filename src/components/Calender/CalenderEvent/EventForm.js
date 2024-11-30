@@ -11,23 +11,32 @@ import {
 } from "@mui/material";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { disabledPreviousDateTime } from "../../../utils/_helpers";
+import {
+  disabledPreviousDate,
+  disabledPreviousDateTime,
+} from "../../../utils/_helpers";
+import { useDispatch } from "react-redux";
+import { processEvent } from "../../../redux/Actions/eventActions";
 
 const EventForm = ({ defaultValues = {} }) => {
+  const dispatch = useDispatch();
   const initialValues = {
     title: "",
-    startDate: defaultValues.startDate || "",
-    endDate: "",
+    eventDate: defaultValues.eventDate || "",
+    eventTime: "",
     description: "",
-    dropdownValue: "",
+    eventType: "",
+    startTime: "",
+    endTime: "",
   };
 
   const validatation = Yup.object().shape({
     title: Yup.string().required("Title is required"),
-    dropdownValue: Yup.string().required("Field is required"),
-    startDate: Yup.date().required("Field is required"),
-    endDate: Yup.date().required("Field is required"),
+    eventType: Yup.string().required("Field is required"),
+    eventDate: Yup.date().required("Field is required"),
     description: Yup.string().nullable("Field is required"),
+    startTime: Yup.string().nullable("Field is required"),
+    endTime: Yup.string().nullable("Field is required"),
   });
 
   const {
@@ -47,17 +56,19 @@ const EventForm = ({ defaultValues = {} }) => {
     onSubmit: (values) => {
       try {
         console.log("values", values);
+        dispatch(processEvent(values)).then((response) => {
+          console.log("response", response.payload);
+        });
       } catch (error) {
         console.log("login-page api call error: " + error);
       } finally {
-        resetForm();
       }
     },
   });
 
   useEffect(() => {
     if (defaultValues) {
-      setFieldValue("startDate", defaultValues.startDate);
+      setFieldValue("eventDate", defaultValues.eventDate);
     }
   }, defaultValues);
 
@@ -91,53 +102,72 @@ const EventForm = ({ defaultValues = {} }) => {
         <InputLabel id="dropdown-label">Event Type</InputLabel>
         <Select
           labelId="dropdown-label"
-          name="dropdownValue"
-          value={values.dropdownValue}
-          onChange={handleChange("dropdownValue")}
-          onBlur={handleBlur("dropdownValue")}
+          name="eventType"
+          value={values.eventType}
+          onChange={handleChange("eventType")}
+          onBlur={handleBlur("eventType")}
+          InputLabelProps={{
+            shrink: true, // Ensures the label stays above the input
+          }}
         >
           <MenuItem value="meeting">Meeting</MenuItem>
           <MenuItem value="workshop">Workshop</MenuItem>
           <MenuItem value="webinar">Webinar</MenuItem>
         </Select>
-        {touched.dropdownValue && errors.dropdownValue && (
+        {touched.eventType && errors.eventType && (
           <Alert severity="error" sx={{ mt: 1 }}>
-            {errors.dropdownValue}
+            {errors.eventType}
           </Alert>
         )}
       </FormControl>
 
       {/* Start Date */}
       <TextField
-        label="Start Date"
-        name="startDate"
-        type="datetime-local"
-        value={values.startDate}
-        onChange={handleChange("startDate")}
-        onBlur={handleBlur("startDate")}
+        label="Event Date"
+        name="eventDate"
+        type="date"
+        value={values.eventDate}
+        onChange={handleChange("eventDate")}
+        onBlur={handleBlur("eventDate")}
+        min={disabledPreviousDate()}
+        fullWidth
+        margin="normal"
+        InputLabelProps={{
+          shrink: true, // Ensures the label stays above the input
+        }}
+        error={touched.eventDate && errors.eventDate}
+      />
+
+      <TextField
+        label="Start Time"
+        name="startTime"
+        type="time"
+        value={values.startTime}
+        onChange={handleChange("startTime")}
+        onBlur={handleBlur("startTime")}
         min={disabledPreviousDateTime()}
         fullWidth
         margin="normal"
         InputLabelProps={{
           shrink: true, // Ensures the label stays above the input
         }}
-        error={touched.startDate && errors.startDate}
+        error={touched.startTime && errors.startTime}
       />
 
-      {/* End Date */}
       <TextField
-        label="End Date"
-        name="endDate"
-        type="datetime-local"
-        value={values.endDate}
-        onChange={handleChange("endDate")}
-        onBlur={handleBlur("endDate")}
+        label="End Time"
+        name="endTime"
+        type="time"
+        value={values.endTime}
+        onChange={handleChange("endTime")}
+        onBlur={handleBlur("endTime")}
+        min={disabledPreviousDateTime()}
         fullWidth
         margin="normal"
         InputLabelProps={{
-          shrink: true,
+          shrink: true, // Ensures the label stays above the input
         }}
-        error={touched.endDate && errors.endDate}
+        error={touched.endTime && errors.endTime}
       />
 
       {/* Description */}
