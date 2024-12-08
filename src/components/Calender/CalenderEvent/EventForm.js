@@ -22,7 +22,7 @@ const EventForm = ({ defaultValues = {} }) => {
   const dispatch = useDispatch();
   const initialValues = {
     title: "",
-    eventDate: defaultValues.eventDate || "",
+    eventDate: defaultValues.startDate || "",
     eventTime: "",
     description: "",
     eventType: "",
@@ -67,10 +67,10 @@ const EventForm = ({ defaultValues = {} }) => {
   });
 
   useEffect(() => {
-    if (defaultValues) {
-      setFieldValue("eventDate", defaultValues.eventDate);
+    if (defaultValues.startDate) {
+      setFieldValue("eventDate", defaultValues.startDate);
     }
-  }, defaultValues);
+  }, [defaultValues.startDate]);
 
   return (
     <Box
@@ -106,13 +106,11 @@ const EventForm = ({ defaultValues = {} }) => {
           value={values.eventType}
           onChange={handleChange("eventType")}
           onBlur={handleBlur("eventType")}
-          InputLabelProps={{
-            shrink: true, // Ensures the label stays above the input
-          }}
         >
-          <MenuItem value="meeting">Meeting</MenuItem>
-          <MenuItem value="workshop">Workshop</MenuItem>
-          <MenuItem value="webinar">Webinar</MenuItem>
+          <MenuItem value="Friendly">Friendly</MenuItem>
+          <MenuItem value="Within-Company">Within Company</MenuItem>
+          <MenuItem value="Companies-Match">Companies Match</MenuItem>
+          <MenuItem value="Companies-Tournament">Companies Tournament</MenuItem>
         </Select>
         {touched.eventType && errors.eventType && (
           <Alert severity="error" sx={{ mt: 1 }}>
@@ -133,7 +131,7 @@ const EventForm = ({ defaultValues = {} }) => {
         fullWidth
         margin="normal"
         InputLabelProps={{
-          shrink: true, // Ensures the label stays above the input
+          shrink: true,
         }}
         error={touched.eventDate && errors.eventDate}
       />
@@ -149,7 +147,7 @@ const EventForm = ({ defaultValues = {} }) => {
         fullWidth
         margin="normal"
         InputLabelProps={{
-          shrink: true, // Ensures the label stays above the input
+          shrink: true,
         }}
         error={touched.startTime && errors.startTime}
       />
@@ -165,7 +163,7 @@ const EventForm = ({ defaultValues = {} }) => {
         fullWidth
         margin="normal"
         InputLabelProps={{
-          shrink: true, // Ensures the label stays above the input
+          shrink: true,
         }}
         error={touched.endTime && errors.endTime}
       />

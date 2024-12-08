@@ -11,11 +11,16 @@ import "./style.css";
 
 const MyCalendar = ({
   events,
+  dateRange = {
+    start: "",
+    end: "",
+  },
   permissions = {
     canViewDetails: true,
     canEditEvents: false,
     canNavigate: true,
     canChangeView: true,
+    canDateRange: false,
   },
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -85,6 +90,7 @@ const MyCalendar = ({
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
+          validRange={permissions.canDateRange && dateRange}
           editable
           droppable
           headerToolbar={
@@ -104,9 +110,13 @@ const MyCalendar = ({
               toast.error("Saturdays and Sundays are disabled.");
             } else {
               if (permissions.canNavigate) {
-                info.view.calendar.gotoDate(info.date);
-                console.log("Clicked date start:", info.dateStr);
-                setStartDatetime(info.dateStr);
+                const today = new Date();
+                if (new Date(info.dateStr) < today) {
+                  toast.error("Select Today or future dates");
+                } else {
+                  info.view.calendar.gotoDate(info.date);
+                  setStartDatetime(info.dateStr);
+                }
               }
             }
           }}
@@ -166,11 +176,7 @@ const MyCalendar = ({
             isDrawerOpen={isDrawerOpen}
             toggleDrawer={toggleDrawer}
             contentTitle="Create Event"
-            content={
-              <EventForm
-                defaultValues={{ startDate: formatDateTime(startDatetime) }}
-              />
-            }
+            content={<EventForm defaultValues={{ startDate: startDatetime }} />}
           />
         )}
       </Fragment>
